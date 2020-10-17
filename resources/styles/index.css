@@ -1,0 +1,15 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+}
+
+/* @font-face {
+  font-family: 'Hauss';
+  src: url(../assets/fonts/ALSHauss.ttf);
+} */

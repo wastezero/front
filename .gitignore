@@ -1,0 +1,37 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+/_esy
+/_opam
+
+# testing
+/coverage
+server.cert
+server.key
+
+# production
+/build
+/dist
+/distmock
+/distedge
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+.cache
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ocaml
+/lib
+.merlin
+.bsb.lock
+*.bs.js

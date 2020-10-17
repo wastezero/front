@@ -1,0 +1,40 @@
+{
+  "name": "console-ui",
+  "reason": {
+    "react-jsx": 3
+  },
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "bs-dependencies": [
+    "@ahrefs/bs-atdgen-codec-runtime",
+    "@ahrefs/bs-dotenv",
+    "@ahrefs/bs-numeral",
+    "@ahrefs/bs-recharts",
+    "@glennsl/bs-json",
+    "bs-fetch",
+    "bs-webapi",
+    // "reason-nodejs",
+    "reason-react",
+    "reason-react-update",
+    "re-classnames",
+    "bs-express"
+  ],
+  "ppx-flags": [],
+  // "ppx-flags": ["tailwind-ppx"],
+  "refmt": 3,
+  "warnings": {
+    // "number": "-44-102",
+    "error": "+8"
+  }
+}

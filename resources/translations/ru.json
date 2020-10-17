@@ -1,0 +1,13 @@
+{
+  "sidebar.menu.help": "Помощь",
+  "sidebar.menu.history": "История",
+  "sidebar.menu.home": "Главная",
+  "sidebar.menu.svc_card_withdrawal": "Вывод на карты",
+  "batch_requests.titles.requisites": "Реквизиты",
+  "batch_requests.titles.amount": "Сумма",
+  "batch_requests.titles.status": "Статус",
+  "batch_requests.titles.fee": "Коммисия",
+  "batch_requests.titles.amount_total": "Итоговая сумма",
+  "actions.create": "Создать",
+  "actions.upload": "Загрузить"
+}

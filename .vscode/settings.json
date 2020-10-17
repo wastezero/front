@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "files.exclude": {
+    "esy.lock/**": true,
+    "**/*.bs.js": true
+  },
+  "ocaml.sandbox": {
+    "kind": "esy",
+    "root": "/Users/admin/Desktop/wastezero"
+  }
+}

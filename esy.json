@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "gen:protocol": "sh tools/gen_protocol.sh"
+  },
+  "dependencies": {
+    "@opam/atd": "*",
+    "@opam/atdgen": "*",
+    "@opam/reason": "*"
+  },
+  "devDependencies": {
+    "ocaml": "4.6.x",
+    "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam"
+  },
+  "resolutions": {
+    "@opam/atd": "github:ahrefs/atd:atd.opam#59b64b0",
+    "@opam/atdgen": "github:ahrefs/atd:atdgen.opam#59b64b0"
+  }
+}

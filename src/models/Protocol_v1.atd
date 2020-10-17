@@ -1,0 +1,47 @@
+(* Common types *)
+
+type decimal = string wrap <ocaml t="Decimal.t" wrap="Decimal.fromString" unwrap="Decimal.toString">
+
+type datetime = string wrap <ocaml t="DateTime.t" wrap="DateTime.fromString" unwrap="DateTime.toString">
+
+type cfg = {
+  app_url: string;
+  cms_api_url: string;
+  app_env: string;
+  ym_key: string;
+  analytics_key: string;
+}
+
+type app_state = {
+  ~ctx <ocaml default="\"user\"">: string;
+  ?serverUrl: string nullable;
+  ?user: user_profile nullable;
+  ~prefetched <ocaml default="false">: bool;
+  ~deviceType <ocaml default="\"\"">: string;
+}
+
+(* Auth *)
+type auth_credentials = {
+  email: string;
+  password: string;
+  remember: bool;
+}
+
+type auth_profile = {
+  id: int;
+}
+
+type user_profile = {
+  id: int;
+}
+
+type error = {
+  ~status <ocaml default="400">: int;
+  message: string;
+  ~errors <ocaml default="[]">: string list;
+}
+
+type pagination = {
+  limit: int;
+  page: int;
+}

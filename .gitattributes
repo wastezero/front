@@ -1,0 +1,3 @@
+*.bs.js linguist-generated=true
+src/models/generated/* linguist-generated=true
+resources/translations/* linguist-generated=true

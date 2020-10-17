@@ -1,0 +1,12 @@
+phrase:
+  project_id: 9550ec971cf7c12f801324528c69038f
+  push:
+    sources:
+      - file: ./resources/translations/<locale_name>.json
+        params:
+          file_format: react_simple_json
+  pull:
+    targets:
+      - file: ./resources/translations/<locale_name>.json
+        params:
+          file_format: react_simple_json
