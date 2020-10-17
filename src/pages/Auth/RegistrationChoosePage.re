@@ -15,27 +15,29 @@ let make = () => {
       <div className="col-start-4 col-span-6">
         <div
           className="grid grid-cols-2 divide-x divide-gray-400 cursor-pointer">
-          <div
+          <Link
+            route={Route.Auth(Register(Restaurant))}
             className="flex flex-col bg-white hover:bg-gray-100 items-center justify-center py-8 px-4 shadow sm:px-10 rounded-l-lg">
             <img className="w-64 h-64" src=restaurantImg />
             <p className="mt-2 text-xl font-bold">
               {React.string({j|Register Your Restaurant|j})}
             </p>
-          </div>
-          <div
+          </Link>
+          <Link
+            route={Route.Auth(Register(Manager))}
             className="flex flex-col bg-white hover:bg-gray-100 items-center justify-center py-8 px-4 shadow sm:px-10 rounded-r-lg">
             <Icons.ManagerIllustration className="w-64 h-64" />
             <p className="mt-2 text-xl font-bold">
               {React.string({j|Register As a Manager|j})}
             </p>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
     <p className="mt-2 text-center text-sm leading-5 text-gray-600 max-w">
       {React.string({j|Or|j})}
       <Link
-        route=Route.Login
+        route={Route.Auth(Login)}
         className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
         {React.string({j| login here|j})}
       </Link>

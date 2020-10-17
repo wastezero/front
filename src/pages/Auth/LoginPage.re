@@ -83,7 +83,7 @@ let make = () => {
             className="mt-2 text-center text-sm leading-5 text-gray-600 max-w">
             {React.string({j|Or|j})}
             <Link
-              route=Route.Register
+              route=Route.Auth(Register(Choose))
               className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
               {React.string({j| register here|j})}
             </Link>
