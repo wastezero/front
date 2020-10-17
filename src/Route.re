@@ -12,16 +12,24 @@ type listState =
   | ItemView(int)
   | ItemEdit(int);
 
+type register =
+  | Choose
+  | Restaurant
+  | Manager;
+
+type auth =
+  | Login
+  | Register(register);
+
 type t =
   /* Pages */
-  | Login
-  | Register
+  | Auth(auth)
   | Account
   | NotFound;
 
 let isProtected =
   fun
-  | Login => false
+  | Auth(Login) => false
   | _ => true;
 
 let toString = route => {
@@ -34,9 +42,17 @@ let toString = route => {
     };
 
   switch (route) {
-  | Login => "/login"
+  | Auth(auth) =>
+    switch (auth) {
+    | Login => "/login"
+    | Register(register) =>
+      switch (register) {
+      | Choose => "/register"
+      | Restaurant => "/register/restaurant"
+      | Manager => "/register/manager"
+      }
+    }
   | Account => "/account"
-  | Register => "/register"
   | NotFound => "/404"
   };
 };
@@ -48,8 +64,15 @@ let toAbsoluteString = route => {
 
 let ofUrl = (url: ReasonReact.Router.url) => {
   switch (url.path) {
-  | ["login"] => Login
-  | ["register"] => Register
+  | ["login"] => Auth(Login)
+  | ["register", ...rest] =>
+    let register =
+      switch (rest) {
+      | ["restaurant"] => Restaurant
+      | ["manager"] => Manager
+      | _ => Choose
+      };
+    Auth(Register(register));
   | _ => Account
   };
 };

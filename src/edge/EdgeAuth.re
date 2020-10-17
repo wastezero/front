@@ -21,7 +21,7 @@ let make = () => {
       Route.isProtected(route)
         ? Express.Response.redirect(
             Route.urlWithParams(
-              ~url=Route.Login,
+              ~url=Route.Auth(Login),
               [("return_to", route |> Route.toString)],
             ),
             res,
@@ -29,7 +29,7 @@ let make = () => {
         : next(Express.Next.middleware, res)
     | Some(_) =>
       switch (route) {
-      | Login =>
+      | Auth(Login) =>
         Express.Response.redirect(Route.Account |> Route.toString, res)
       | _ => next(Express.Next.middleware, res)
       }

@@ -43,8 +43,10 @@ let make = () => {
   | Loading => React.string("Loading")
   | _ =>
     switch (route) {
-    | Login => <LoginPage />
-    | Register => <RegistrationPage />
+    | Auth(Login) => <LoginPage />
+    | Auth(Register(Choose)) => <RegistrationChoosePage />
+    | Auth(Register(Restaurant)) => <RegistrationRestaurantPage />
+    | Auth(Register(Manager)) => <RegistrationManagerPage />
     | _ => <HomePage />
     }
   };

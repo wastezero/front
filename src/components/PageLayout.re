@@ -13,13 +13,6 @@ module Sidebar = {
         <Icons.HeroIcons.Home ?className />;
       },
     },
-    {
-      label: "sidebar.menu.history",
-      route: Route.Login,
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.Clock ?className />;
-      },
-    },
   ];
 
   module SidebarLink = {
@@ -134,7 +127,7 @@ module Sidebar = {
               <hr className="h-px mt-6 bg-gray-700 border-none" />
               <div className="mt-6 flex-1 h-0 overflow-y-auto">
                 <nav className="px-2 space-y-1">
-                  <SidebarLink route=Route.Login isMobile=true>
+                  <SidebarLink route={Route.Auth(Login)} isMobile=true>
                     <Icons.HeroIcons.QuestionMarkCircle
                       className="mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-300 group-focus:text-gray-300 transition ease-in-out duration-150"
                     />
@@ -202,7 +195,7 @@ module Sidebar = {
                   <hr className="h-px mt-6 bg-gray-700 border-none" />
                   <div className="mt-6 flex-1 h-0 overflow-y-auto">
                     <nav className="px-2 space-y-1">
-                      <SidebarLink route=Route.Login>
+                      <SidebarLink route={Route.Auth(Login)}>
                         <Icons.HeroIcons.QuestionMarkCircle
                           className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300 group-focus:text-gray-300 transition ease-in-out duration-150"
                         />
