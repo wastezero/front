@@ -25,7 +25,7 @@ const ClientRender = require('../src/edge/ClientRender.bs');
 DotenvConfig.init();
 
 const app = express();
-const port = DotenvConfig.getInt(7443, 'APP_EDGE_PORT');
+const port = DotenvConfig.getInt(7443, 'PORT');
 
 const cfg = DotenvConfig.makeClientConfig();
 

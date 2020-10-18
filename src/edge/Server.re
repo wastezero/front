@@ -20,7 +20,7 @@ let cfg = DotenvConfig.makeClientConfig();
 let basePath = isDevelopment ? "./dist" : "./";
 let publicPath = Node.Path.join2(basePath, "public");
 
-let port = DotenvConfig.getInt(~default=7443, "APP_EDGE_PORT");
+let port = DotenvConfig.getInt(~default=7443, "PORT");
 
 let app = Express.express();
 
