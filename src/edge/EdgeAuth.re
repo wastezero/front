@@ -30,7 +30,7 @@ let make = () => {
     | Some(_) =>
       switch (route) {
       | Auth(Login) =>
-        Express.Response.redirect(Route.Account |> Route.toString, res)
+        Express.Response.redirect(Route.Account(Home) |> Route.toString, res)
       | _ => next(Express.Next.middleware, res)
       }
     };

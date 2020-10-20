@@ -1,10 +1,9 @@
 open Belt;
 
 type identityCtx =
-  | UserCtx
-  | MerchantCtx
-  | AgentCtx
-  | OperatorCtx;
+  | AdminCtx
+  | RestaurantCtx
+  | ManagerCtx;
 
 type listState =
   | List
@@ -21,10 +20,18 @@ type auth =
   | Login
   | Register(register);
 
+type account =
+  | Home
+  | Restaurants(listState)
+  | Branches(listState)
+  | Managers(listState)
+  | Foods(listState)
+  | Orders(listState);
+
 type t =
   /* Pages */
   | Auth(auth)
-  | Account
+  | Account(account)
   | NotFound;
 
 let isProtected =
@@ -33,7 +40,7 @@ let isProtected =
   | _ => true;
 
 let toString = route => {
-  let _getListStateUrl = (baseUrl, state: listState) =>
+  let getListStateUrl = (baseUrl, state: listState) =>
     switch (state) {
     | List => baseUrl
     | Create => baseUrl ++ "/" ++ "create"
@@ -52,7 +59,16 @@ let toString = route => {
       | Manager => "/register/manager"
       }
     }
-  | Account => "/account"
+  | Account(page) =>
+    switch (page) {
+    | Home => "/account"
+    | Restaurants(listState) =>
+      getListStateUrl("/account/restaurants", listState)
+    | Branches(listState) => getListStateUrl("/account/branches", listState)
+    | Managers(listState) => getListStateUrl("/account/managers", listState)
+    | Foods(listState) => getListStateUrl("/account/foods", listState)
+    | Orders(listState) => getListStateUrl("/account/orders", listState)
+    }
   | NotFound => "/404"
   };
 };
@@ -63,6 +79,13 @@ let toAbsoluteString = route => {
 };
 
 let ofUrl = (url: ReasonReact.Router.url) => {
+  let getListState =
+    fun
+    | ["create"] => Create
+    | [id] => ItemView(id |> int_of_string)
+    | [id, "edit"] => ItemEdit(id |> int_of_string)
+    | _ => List;
+
   switch (url.path) {
   | ["login"] => Auth(Login)
   | ["register", ...rest] =>
@@ -73,7 +96,18 @@ let ofUrl = (url: ReasonReact.Router.url) => {
       | _ => Choose
       };
     Auth(Register(register));
-  | _ => Account
+  | ["account", ...rest] =>
+    let account =
+      switch (rest) {
+      | ["restaurants", ...rest] => Restaurants(getListState(rest))
+      | ["managers", ...rest] => Managers(getListState(rest))
+      | ["branches", ...rest] => Branches(getListState(rest))
+      | ["foods", ...rest] => Foods(getListState(rest))
+      | ["orders", ...rest] => Orders(getListState(rest))
+      | _ => Home
+      };
+    Account(account);
+  | _ => NotFound
   };
 };
 

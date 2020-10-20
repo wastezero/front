@@ -62,7 +62,7 @@ module CtxContext = {
   type dispatch = ctxAction => unit;
   type contextValue = (ctx, dispatch);
 
-  let initValue: contextValue = (UserCtx, _ => ignore());
+  let initValue: contextValue = (ManagerCtx, _ => ignore());
 
   let context = React.createContext(initValue);
 
@@ -86,8 +86,7 @@ let getInitialUser = (~prefetched, user) =>
 
 let getInitialCtx = ctx =>
   switch (ctx) {
-  | "operator" => Route.OperatorCtx
-  | _ => UserCtx
+  | _ => Route.ManagerCtx
   };
 
 let useAuthContext = initialUser => {

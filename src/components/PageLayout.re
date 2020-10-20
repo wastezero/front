@@ -7,10 +7,45 @@ module Sidebar = {
 
   let menuItems = [
     {
-      label: "sidebar.menu.home",
-      route: Route.Account,
+      label: "Home",
+      route: Route.Account(Home),
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.Home ?className />;
+      },
+    },
+    {
+      label: "Restaurants",
+      route: Route.Account(Restaurants(List)),
+      icon: (~className=?, ()) => {
+        <Icons.HeroIcons.Library ?className />;
+      },
+    },
+    {
+      label: "Branches",
+      route: Route.Account(Branches(List)),
+      icon: (~className=?, ()) => {
+        <Icons.HeroIcons.OfficeBuilding ?className />;
+      },
+    },
+    {
+      label: "Managers",
+      route: Route.Account(Managers(List)),
+      icon: (~className=?, ()) => {
+        <Icons.HeroIcons.User ?className />;
+      },
+    },
+    {
+      label: "Foods",
+      route: Route.Account(Foods(List)),
+      icon: (~className=?, ()) => {
+        <Icons.HeroIcons.Menu ?className />;
+      },
+    },
+    {
+      label: "Orders",
+      route: Route.Account(Orders(List)),
+      icon: (~className=?, ()) => {
+        <Icons.HeroIcons.ShoppingBag ?className />;
       },
     },
   ];

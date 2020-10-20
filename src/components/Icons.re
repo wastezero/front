@@ -42,6 +42,40 @@ module HeroIcons = {
     [@bs.module "assets/icons/heroicons/outline/x.svg"] [@react.component]
     external make: (~className: string=?, unit) => React.element = "default";
   };
+
+  module ChartPie = {
+    [@bs.module "assets/icons/heroicons/outline/chart-pie.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module OfficeBuilding = {
+    [@bs.module "assets/icons/heroicons/outline/office-building.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module Library = {
+    [@bs.module "assets/icons/heroicons/outline/library.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module User = {
+    [@bs.module "assets/icons/heroicons/outline/user.svg"] [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module Menu = {
+    [@bs.module "assets/icons/heroicons/outline/menu.svg"] [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module ShoppingBag = {
+    [@bs.module "assets/icons/heroicons/outline/shopping-bag.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
 };
 
 module ManagerIllustration = {

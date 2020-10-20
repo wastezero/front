@@ -22,12 +22,12 @@ let app =
   let route =
     switch (state.serverUrl) {
     | Some(url) => url |> Route.getRouterUrl |> Route.ofUrl
-    | None => Route.Account
+    | None => Route.Account(Home)
     };
 
   let scale =
     switch (route) {
-    | Account => 1.0
+    | Account(Home) => 1.0
     | _ =>
       switch (deviceType) {
       | Some("mobile") => 0.296
