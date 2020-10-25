@@ -78,6 +78,7 @@ let server =
 Express.App.listen(
   server,
   ~port,
+  ~hostname="0.0.0.0",
   ~onListen=_ => {Js.log("Edge started on port " ++ string_of_int(port))},
   (),
 );
