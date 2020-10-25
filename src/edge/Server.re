@@ -20,8 +20,9 @@ let cfg = DotenvConfig.makeClientConfig();
 let basePath = isDevelopment ? "./dist" : "./";
 let publicPath = Node.Path.join2(basePath, "public");
 
+Js.log2("trying to get port value...");
 let port = DotenvConfig.getInt(~default=7443, "PORT");
-
+Js.log2("port = ", port);
 let app = Express.express();
 
 Express.App.disable(app, ~name="x-powered-by");
