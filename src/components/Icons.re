@@ -76,6 +76,12 @@ module HeroIcons = {
     [@react.component]
     external make: (~className: string=?, unit) => React.element = "default";
   };
+
+  module CheckCircle = {
+    [@bs.module "assets/icons/heroicons/solid/check-circle.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
 };
 
 module ManagerIllustration = {

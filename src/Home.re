@@ -47,7 +47,7 @@ let make = () => {
     | Auth(Register(Choose)) => <RegistrationChoosePage />
     | Auth(Register(Restaurant)) => <RegistrationRestaurantPage />
     | Auth(Register(Manager)) => <RegistrationManagerPage />
-    | Account(_page) => <HomePage />
+    | Account(page) => <HomePage page />
     | NotFound => React.string("404")
     }
   };

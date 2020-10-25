@@ -82,7 +82,7 @@ module Sidebar = {
     let currentRoute = Route.useUrl() |> Route.ofUrl;
     <>
       // <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-      <div className="lg:hidden">
+      <div className="hidden">
         <div className="fixed inset-0 flex z-40">
           // <!--
           //   Off-canvas menu overlay, show/hide based on off-canvas menu state.
@@ -278,15 +278,14 @@ module ProfileDropdown = {
           //  ariaHaspopup="true"
           ariaLabel="User menu"
           onClick={_ => setIsDropdownShown(_ => !isDropdownShown)}>
-          <span
-            className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-500">
-            <span className="text-xs font-medium leading-none text-white">
-              {React.string("MR")}
-            </span>
-          </span>
+          <img
+            className="h-8 w-8 rounded-full"
+            src="https://media-exp1.licdn.com/dms/image/C4D03AQE2qeFOktdI9Q/profile-displayphoto-shrink_100_100/0?e=1608768000&v=beta&t=CMdOXf5hQMRh6rB0xd2u3GSmHr6o78tFYELb5s244ps"
+            alt=""
+          />
           <p
             className="hidden ml-3 text-cool-gray-700 text-sm leading-5 font-medium lg:block">
-            {React.string("Mona Rizvi")}
+            {React.string("Daneker Bekker")}
           </p>
           // <!-- Heroicon name: chevron-down -->
           <Icons.HeroIcons.ChevronDown
