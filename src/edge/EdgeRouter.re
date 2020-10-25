@@ -21,9 +21,11 @@ let make = () => {
     let route = Route.ofUrl(url);
     switch (route) {
     | Route.NotFound =>
-      Express.Response.sendStatus(Express.Response.StatusCode.NotFound, res)
+      Js.log2("route not found in router", url);
+      Express.Response.sendStatus(Express.Response.StatusCode.NotFound, res);
     | _ => next(Express.Next.middleware, res)
     };
+    // next(Express.Next.middleware, res);
   };
 };
 

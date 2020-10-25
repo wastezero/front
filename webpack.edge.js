@@ -3,6 +3,8 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 
@@ -15,13 +17,11 @@ dotenv.config();
 
 const config = {
   mode: isDev ? 'development' : 'production',
-
   resolve: {
     alias: {
       assets: path.join(rootPath, 'resources/assets'),
     },
   },
-
   module: {
     rules: [
       {
@@ -40,12 +40,15 @@ const config = {
         ],
       },
       {
-        test: /\.s[ac]ss$/,
-        use: ['null-loader'],
-      },
-      {
-        test: /\.js$/,
-        use: ['babel-loader'],
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/fonts/[name].[hash:8].[ext]',
+            },
+          },
+        ],
       },
     ],
   },
@@ -73,7 +76,17 @@ const edgeConfig = {
   },
 
   module: {
-    rules: [...config.module.rules],
+    rules: [
+      ...config.module.rules,
+      {
+        test: /\.css$/,
+        use: ['null-loader'],
+      },
+      {
+        test: /\.js$/,
+        use: ['babel-loader'],
+      },
+    ],
   },
 
   node: {
@@ -90,12 +103,15 @@ const edgeConfig = {
 
 const clientPlugins = [
   ...config.plugins,
+  new MiniCssExtractPlugin({
+    filename: 'assets/css/[name].[hash:8].css',
+    chunkFilename: 'assets/css/[name].bundle.[hash:8].css',
+  }),
   new WebpackAssetsManifest({
     output: '../webpack-manifest.json',
   }),
   new CopyWebpackPlugin({
     patterns: [
-      {from: 'public/static', to: 'static/'},
       {from: 'public/*', flatten: true},
       {from: 'resources/assets/icons', to: 'static/icons'},
     ],
@@ -106,14 +122,12 @@ if (!isDev) {
   clientPlugins.push(new webpack.HashedModuleIdsPlugin());
 }
 
-let clientEntry = {
-  main: ['./resources/styles/index.scss', './src/index.bs.js'],
-};
-
 const clientConfig = {
   ...config,
 
-  entry: clientEntry,
+  entry: {
+    main: ['./src/index.bs.js'],
+  },
 
   devtool: 'source-map',
   node: {
@@ -125,7 +139,39 @@ const clientConfig = {
   output: {
     path: publicPath,
     publicPath: '/',
-    filename: 'assets/js/main.[hash:8].js',
+    filename: 'assets/js/[name].[hash:8].js',
+  },
+
+  module: {
+    rules: [
+      ...config.module.rules,
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          // 'style-loader',
+          {
+            loader: 'css-loader',
+            options: {importLoaders: 1},
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                ident: 'postcss',
+                plugins: [
+                  require('postcss-import'),
+                  require('tailwindcss'),
+                  require('autoprefixer'),
+                ],
+              },
+            },
+          },
+        ],
+      },
+    ],
   },
 
   plugins: clientPlugins,

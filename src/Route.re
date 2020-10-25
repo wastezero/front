@@ -87,6 +87,8 @@ let ofUrl = (url: ReasonReact.Router.url) => {
     | _ => List;
 
   switch (url.path) {
+  | []
+  | [""] => Account(Home)
   | ["login"] => Auth(Login)
   | ["register", ...rest] =>
     let register =

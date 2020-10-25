@@ -52,7 +52,6 @@
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.10.1",
-    "@dylanirlbeck/tailwind-ppx": "^0.8.3",
     "@loadable/babel-plugin": "^5.13.0",
     "@loadable/webpack-plugin": "^5.13.0",
     "@svgr/webpack": "^5.4.0",
