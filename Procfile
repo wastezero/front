@@ -1,1 +1,1 @@
-web: yarn re:build && yarn edge:build
+web: node ./dist/edge.js

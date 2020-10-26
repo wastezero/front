@@ -8,7 +8,11 @@ let make = (~page: Route.account) => {
       <NavbarTop />
       {switch (page) {
        | Home => <AccountHomePage />
-       | Restaurants(listState) => React.string({j|Restaurants|j})
+       | Restaurants(listState) =>
+         switch (listState) {
+         | ItemView(_) => <RestaurantView />
+         | _ => React.string({j|Restaurants|j})
+         }
        | Branches(listState) => React.string({j|Branches|j})
        | Managers(listState) => React.string({j|Managers|j})
        | Foods(listState) => React.string({j|Foods|j})

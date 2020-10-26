@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "node -r esm bin/dev-server.js",
+    "postinstall": "yarn re:build && yarn edge:build",
     "pack:dev": "webpack --progress --config webpack.dev.js",
     "pack:prod": "webpack --progress --config webpack.production.js",
     "re:clean": "bsb -clean-world",

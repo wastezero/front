@@ -7,7 +7,8 @@ external createSecureServer: ('a, 'c) => 'b = "createServer";
 // external mocker: (string, string, Express.Middleware.f) => 'a = "default";
 
 // let isDevelopment = DotenvConfig.getBool("IS_DEVELOPMENT");
-[@bs.val] external isDevelopment: bool = "process.env.IS_DEVELOPMENT";
+// [@bs.val] external isDevelopment: bool = "process.env.IS_DEVELOPMENT";
+let isDevelopment = false;
 
 DotenvConfig.init();
 
@@ -21,6 +22,7 @@ let basePath = isDevelopment ? "./dist" : "./";
 let publicPath = Node.Path.join2(basePath, "public");
 
 let port = DotenvConfig.getInt(~default=7443, "PORT");
+Js.log2("isDevelopment = ", isDevelopment);
 Js.log2("port = ", port);
 let app = Express.express();
 
