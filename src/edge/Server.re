@@ -7,7 +7,8 @@ external createSecureServer: ('a, 'c) => 'b = "createServer";
 // external mocker: (string, string, Express.Middleware.f) => 'a = "default";
 
 // let isDevelopment = DotenvConfig.getBool("IS_DEVELOPMENT");
-[@bs.val] external isDevelopment: bool = "process.env.IS_DEVELOPMENT";
+// [@bs.val] external isDevelopment: bool = "process.env.IS_DEVELOPMENT";
+let isDevelopment = true;
 
 DotenvConfig.init();
 
