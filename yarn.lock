@@ -914,11 +914,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@dylanirlbeck/tailwind-ppx@^0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@dylanirlbeck/tailwind-ppx/-/tailwind-ppx-0.8.3.tgz#f3af9dbe2bbf141dda6dc278cbf63b2b36b258d6"
-  integrity sha512-5YTpWRJoJ4fKWYs4YU4P3jhUYrlbf/50kHZG+/KIjEI40lU2TUZ36Jtl76AzcIho2EcNdXj4ukGXNMCr24AJEA==
-
 "@fullhuman/postcss-purgecss@^2.1.2":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@fullhuman/postcss-purgecss/-/postcss-purgecss-2.3.0.tgz#50a954757ec78696615d3e118e3fee2d9291882e"

@@ -82,6 +82,11 @@ module HeroIcons = {
     [@react.component]
     external make: (~className: string=?, unit) => React.element = "default";
   };
+
+  module Eye = {
+    [@bs.module "assets/icons/heroicons/outline/eye.svg"] [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
 };
 
 module ManagerIllustration = {
