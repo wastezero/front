@@ -1,4 +1,5 @@
 open Auth;
+open Toast;
 
 [@react.component]
 let make = (~state: Config.state) => {
@@ -8,8 +9,12 @@ let make = (~state: Config.state) => {
 
   let (user, dispatchAuth) = useAuthContext(initialUser);
   let (ctx, dispatchCtx) = useCtxContext(initialCtx);
+  let (toasts, dispatchToasts) = useToastsContext([]);
 
-  <UserProvider value=(user, dispatchAuth)>
-    <CtxProvider value=(ctx, dispatchCtx)> <Home /> </CtxProvider>
-  </UserProvider>;
+  <ToastsProvider value=(toasts, dispatchToasts)>
+    <UserProvider value=(user, dispatchAuth)>
+      <CtxProvider value=(ctx, dispatchCtx)> <Home /> </CtxProvider>
+    </UserProvider>
+    <ToastsContainer />
+  </ToastsProvider>;
 };

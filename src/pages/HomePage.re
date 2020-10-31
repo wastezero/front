@@ -2,6 +2,21 @@ open PageLayout;
 
 [@react.component]
 let make = (~page: Route.account) => {
+  let (_, dispatchToasts) = Toast.ToastsContext.useToasts();
+
+  React.useEffect0(() => {
+    dispatchToasts(
+      Add({
+        id: Toast.generateId(),
+        text: {j|Welcome back, Daneker Bekker|j},
+        kind: `success,
+        subtext: {j|We are happy to see you again|j},
+        onClick: () => (),
+      }),
+    );
+    None;
+  });
+
   <div className="h-screen flex overflow-hidden bg-cool-gray-100">
     <Sidebar />
     <div className="flex-1 overflow-auto focus:outline-none" tabIndex=0>

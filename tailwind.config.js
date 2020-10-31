@@ -19,6 +19,23 @@ module.exports = {
           'monospace',
         ],
       },
+      spacing: {
+        'sm': '24rem',
+      },
+      animation: {
+        fadeInUp: 'fadeInUp 0.5s ease-out',
+        fadeOut: 'fadeOut 0.5s ease-out'
+      },
+      keyframes: {
+        fadeInUp: {
+          '0%': { transform: 'translateY(0.5rem)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+        fadeOut: {
+          '0%': {opacity: 1 },
+          '100%': {opacity: 0 },
+        }
+      }
     },
   },
   variants: {},
