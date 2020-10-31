@@ -1,7 +1,72 @@
+open Models;
+
 [@bs.module "assets/images/logo.png"] external logoUrl: string = "default";
 
 [@react.component]
 let make = () => {
+  let (_, dispatch) = Auth.UserContext.useUser();
+  let (_, dispatchToasts) = Toast.ToastsContext.useToasts();
+
+  let handleRouteNavigation = () => {
+    let return_to = Route.getParamValue("return_to", ());
+    switch (return_to) {
+    | Some(uri) => ReasonReactRouter.push(uri)
+    | None =>
+      dispatchToasts(
+        Add({
+          id: Toast.generateId(),
+          text: {j|Welcome back, Daneker Bekker|j},
+          kind: `success,
+          subtext: {j|We are happy to see you again|j},
+          onClick: () => (),
+        }),
+      );
+      Route.navigateTo(Account(Home));
+    };
+  };
+
+  let submit = (credentials: Auth.credentials) => {
+    Js.Promise.(
+      Auth.signin(credentials)
+      |> then_(result => {
+           let () =
+             switch (result) {
+             | Ok((profile: UserProfile.t)) =>
+               dispatch(
+                 Auth.UserAuthenticated(
+                   profile,
+                   () => {
+                     Config.saveUserToken(
+                       Some(profile.authentication_token),
+                     );
+                     // TODO Redirect to intended route instead of Home
+                     handleRouteNavigation();
+                   },
+                 ),
+               )
+             | Error((err: Request.error)) =>
+               dispatchToasts(
+                 Add({
+                   id: Toast.generateId(),
+                   text: err.message,
+                   subtext: err.message,
+                   kind: `warning,
+                   onClick: () => (),
+                 }),
+               )
+             };
+           resolve(result);
+         })
+    );
+  };
+
+  // let (passwordHidden, setPasswordHidden) = React.useState(() => true);
+
+  let form = Form.useForm(~submit);
+
+  let email = Form.useField(~form, ~initialValue="", value => Ok(value));
+  let password = Form.useField(~form, ~initialValue="", value => Ok(value));
+
   <div
     className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -18,7 +83,15 @@ let make = () => {
           className="text-left text-2xl leading-6 font-extrabold text-gray-900">
           {React.string({j|Sign in to your account|j})}
         </h3>
-        <form action="#" method="POST" className="mt-4">
+        <form
+          onSubmit={ev => {
+            form.submit({email: email.value, password: password.value});
+            ReactEvent.Synthetic.preventDefault(
+              ReactEvent.toSyntheticEvent(ev),
+            );
+          }}
+          method="POST"
+          className="mt-4">
           <div>
             <label
               htmlFor="email"
@@ -26,11 +99,12 @@ let make = () => {
               {React.string({j|Email address|j})}
             </label>
             <div className="mt-1 rounded-md shadow-sm">
-              <input
-                id="email"
+              <Input
                 type_="email"
                 required=true
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                value={email.value}
+                onChange={value => email.onChange(value)}
               />
             </div>
           </div>
@@ -41,8 +115,9 @@ let make = () => {
               {React.string({j|Password|j})}
             </label>
             <div className="mt-1 rounded-md shadow-sm">
-              <input
-                id="password"
+              <Input
+                value={password.value}
+                onChange={value => password.onChange(value)}
                 type_="password"
                 required=true
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
@@ -83,7 +158,7 @@ let make = () => {
             className="mt-2 text-center text-sm leading-5 text-gray-600 max-w">
             {React.string({j|Or|j})}
             <Link
-              route=Route.Auth(Register(Choose))
+              route={Route.Auth(Register(Choose))}
               className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
               {React.string({j| register here|j})}
             </Link>

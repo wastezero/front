@@ -35,3 +35,25 @@ let getState = () => {
 };
 
 let svcCashWithdrawal = 1;
+
+let fetchUserTokenFromStorage = () => {
+  switch (Dom.Storage.getItem("user-token", Dom.Storage.localStorage)) {
+  | Some(userId) => Some(userId)
+  | None => None
+  };
+};
+
+let fetchUserToken = () => {
+  switch ([%external localStorage]) {
+  | Some(_) => fetchUserTokenFromStorage()
+  | None => None
+  };
+};
+
+let saveUserToken = payload => {
+  switch (payload) {
+  | Some(userId) =>
+    Dom.Storage.setItem("user-token", userId, Dom.Storage.localStorage)
+  | None => Dom.Storage.removeItem("user-token", Dom.Storage.localStorage)
+  };
+};

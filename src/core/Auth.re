@@ -3,8 +3,7 @@ open Models;
 type user =
   | Guest
   | Loading
-  | Authorized(UserProfile.t)
-  | Authenticated(UserProfile.t);
+  | Authorized(UserProfile.t);
 
 type action =
   | UserRequested
@@ -18,23 +17,27 @@ type ctxAction =
   | CtxChanged(ctx);
 
 type credentials = Protocol_v1_t.auth_credentials;
+type credentials_wrapper = Protocol_v1_t.auth_credentials_wrapper;
 
 let signin: credentials => Js.Promise.t(result(UserProfile.t, Request.error)) =
   form => {
-    let payload = form |> Atd.encode(Protocol_v1_bs.write_auth_credentials);
+    let payload: credentials_wrapper = {user: form};
     let decode = UserProfile.decode;
 
-    Request.post(~decode, "/api/v1/auth/login", payload);
+    Request.post(
+      ~decode,
+      "/api/v1/sign_in",
+      payload |> Atd.encode(Protocol_v1_bs.write_auth_credentials_wrapper),
+    );
   };
 
-let fetchUserProfile = (~headers=?, userId) => {
-  let payload = Atd.encode(Protocol_v1_bs.write_auth_profile, {id: userId});
-
+let fetchUserProfile = (~headers=?, _userId) => {
+  // let payload = Atd.encode(Protocol_v1_bs.write_auth_profile, {id: userId});
   Request.post(
     ~headers?,
     ~decode=UserProfile.decode,
     "/api/v1/user/profile",
-    payload,
+    Js.Json.null,
   );
 };
 

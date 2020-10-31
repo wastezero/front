@@ -8,6 +8,11 @@ let addDefaultHeaders = (headers: Fetch.Headers.t) => {
   append("Content-Type", "application/json", headers);
   append("Accept", "application/json", headers);
 
+  switch (Config.fetchUserToken()) {
+  | Some(token) => set("Authorization", {j|Bearer $token|j}, headers)
+  | None => ()
+  };
+
   headers;
 };
 

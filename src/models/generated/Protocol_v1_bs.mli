@@ -1,7 +1,11 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type user_profile = Protocol_v1_t.user_profile = { id: int }
+type user_profile = Protocol_v1_t.user_profile = {
+  id: int;
+  authentication_token: string;
+  email: string
+}
 
 type pagination = Protocol_v1_t.pagination = { limit: int; page: int }
 
@@ -23,12 +27,19 @@ type cfg = Protocol_v1_t.cfg = {
   analytics_key: string
 }
 
-type auth_profile = Protocol_v1_t.auth_profile = { id: int }
+type auth_profile = Protocol_v1_t.auth_profile = {
+  id: int;
+  authentication_token: string;
+  email: string
+}
 
 type auth_credentials = Protocol_v1_t.auth_credentials = {
   email: string;
-  password: string;
-  remember: bool
+  password: string
+}
+
+type auth_credentials_wrapper = Protocol_v1_t.auth_credentials_wrapper = {
+  user: auth_credentials
 }
 
 type app_state = Protocol_v1_t.app_state = {
@@ -70,6 +81,10 @@ val write_auth_profile :  auth_profile Atdgen_codec_runtime.Encode.t
 val read_auth_credentials :  auth_credentials Atdgen_codec_runtime.Decode.t
 
 val write_auth_credentials :  auth_credentials Atdgen_codec_runtime.Encode.t
+
+val read_auth_credentials_wrapper :  auth_credentials_wrapper Atdgen_codec_runtime.Decode.t
+
+val write_auth_credentials_wrapper :  auth_credentials_wrapper Atdgen_codec_runtime.Encode.t
 
 val read_app_state :  app_state Atdgen_codec_runtime.Decode.t
 

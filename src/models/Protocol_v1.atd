@@ -24,15 +24,22 @@ type app_state = {
 type auth_credentials = {
   email: string;
   password: string;
-  remember: bool;
+}
+
+type auth_credentials_wrapper = {
+  user: auth_credentials;
 }
 
 type auth_profile = {
   id: int;
+  authentication_token: string;
+  email: string;
 }
 
 type user_profile = {
   id: int;
+  authentication_token: string;
+  email: string;
 }
 
 type error = {

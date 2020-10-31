@@ -1,7 +1,11 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type user_profile = Protocol_v1_t.user_profile = { id: int }
+type user_profile = Protocol_v1_t.user_profile = {
+  id: int;
+  authentication_token: string;
+  email: string
+}
 
 type pagination = Protocol_v1_t.pagination = { limit: int; page: int }
 
@@ -23,12 +27,19 @@ type cfg = Protocol_v1_t.cfg = {
   analytics_key: string
 }
 
-type auth_profile = Protocol_v1_t.auth_profile = { id: int }
+type auth_profile = Protocol_v1_t.auth_profile = {
+  id: int;
+  authentication_token: string;
+  email: string
+}
 
 type auth_credentials = Protocol_v1_t.auth_credentials = {
   email: string;
-  password: string;
-  remember: bool
+  password: string
+}
+
+type auth_credentials_wrapper = Protocol_v1_t.auth_credentials_wrapper = {
+  user: auth_credentials
 }
 
 type app_state = Protocol_v1_t.app_state = {
@@ -50,6 +61,20 @@ let write_user_profile = (
             )
           ~name:"id"
           t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"authentication_token"
+          t.authentication_token
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
       ]
     )
   )
@@ -63,6 +88,18 @@ let read_user_profile = (
             (
               Atdgen_codec_runtime.Decode.int
               |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          authentication_token =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "authentication_token"
+            ) json;
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
             ) json;
       } : user_profile)
     )
@@ -297,6 +334,20 @@ let write_auth_profile = (
             )
           ~name:"id"
           t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"authentication_token"
+          t.authentication_token
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
       ]
     )
   )
@@ -310,6 +361,18 @@ let read_auth_profile = (
             (
               Atdgen_codec_runtime.Decode.int
               |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          authentication_token =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "authentication_token"
+            ) json;
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
             ) json;
       } : auth_profile)
     )
@@ -333,13 +396,6 @@ let write_auth_credentials = (
             )
           ~name:"password"
           t.password
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.bool
-            )
-          ~name:"remember"
-          t.remember
       ]
     )
   )
@@ -360,13 +416,36 @@ let read_auth_credentials = (
               Atdgen_codec_runtime.Decode.string
               |> Atdgen_codec_runtime.Decode.field "password"
             ) json;
-          remember =
+      } : auth_credentials)
+    )
+  )
+)
+let write_auth_credentials_wrapper = (
+  Atdgen_codec_runtime.Encode.make (fun (t : auth_credentials_wrapper) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_auth_credentials
+            )
+          ~name:"user"
+          t.user
+      ]
+    )
+  )
+)
+let read_auth_credentials_wrapper = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          user =
             Atdgen_codec_runtime.Decode.decode
             (
-              Atdgen_codec_runtime.Decode.bool
-              |> Atdgen_codec_runtime.Decode.field "remember"
+              read_auth_credentials
+              |> Atdgen_codec_runtime.Decode.field "user"
             ) json;
-      } : auth_credentials)
+      } : auth_credentials_wrapper)
     )
   )
 )

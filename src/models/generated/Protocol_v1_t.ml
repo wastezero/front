@@ -1,7 +1,7 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type user_profile = { id: int }
+type user_profile = { id: int; authentication_token: string; email: string }
 
 type pagination = { limit: int; page: int }
 
@@ -19,9 +19,11 @@ type cfg = {
   analytics_key: string
 }
 
-type auth_profile = { id: int }
+type auth_profile = { id: int; authentication_token: string; email: string }
 
-type auth_credentials = { email: string; password: string; remember: bool }
+type auth_credentials = { email: string; password: string }
+
+type auth_credentials_wrapper = { user: auth_credentials }
 
 type app_state = {
   ctx: string;
