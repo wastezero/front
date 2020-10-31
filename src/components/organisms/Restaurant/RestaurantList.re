@@ -119,7 +119,7 @@ let make = () => {
             {React.string({j|Restaurant|j})}
           </h3>
           <Link
-            route={Route.Account(Orders(Create))}
+            route={Route.Account(Restaurants(Create))}
             className="text-sm bg-transparent ml-auto cursor-pointer hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded">
             {React.string({j|Create|j})}
           </Link>

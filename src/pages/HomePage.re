@@ -11,10 +11,14 @@ let make = (~page: Route.account) => {
        | Restaurants(listState) =>
          switch (listState) {
          | ItemView(_) => <RestaurantView />
-         | List => <RestaurantList />
-         | _ => React.string({j|Restaurants|j})
+         | List
+         | _ => <RestaurantList />
          }
-       | Branches(_) => React.string({j|Branches|j})
+       | Branches(listState) =>
+         switch (listState) {
+         | List
+         | _ => <BranchList />
+         }
        | Managers(_) => React.string({j|Managers|j})
        | Foods(_) => React.string({j|Foods|j})
        | Orders(listState) =>

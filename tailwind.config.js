@@ -10,7 +10,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Hauss', ...defaultTheme.fontFamily.sans],
+        mono: [
+          '"SFMono-Regular"',
+          'Consolas',
+          '"Liberation Mono"',
+          'Menlo',
+          'Courier',
+          'monospace',
+        ],
       },
     },
   },
