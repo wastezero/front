@@ -3,6 +3,7 @@ module Sidebar = {
     label: string,
     route: Route.t,
     icon: (~className: string=?, unit) => React.element,
+    soon: bool,
   };
 
   let menuItems = [
@@ -12,6 +13,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.Home ?className />;
       },
+      soon: false,
     },
     {
       label: "Restaurants",
@@ -19,6 +21,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.Library ?className />;
       },
+      soon: false,
     },
     {
       label: "Branches",
@@ -26,6 +29,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.OfficeBuilding ?className />;
       },
+      soon: true,
     },
     {
       label: "Managers",
@@ -33,6 +37,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.User ?className />;
       },
+      soon: true,
     },
     {
       label: "Foods",
@@ -40,6 +45,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.Menu ?className />;
       },
+      soon: true,
     },
     {
       label: "Orders",
@@ -47,6 +53,7 @@ module Sidebar = {
       icon: (~className=?, ()) => {
         <Icons.HeroIcons.ShoppingBag ?className />;
       },
+      soon: false,
     },
   ];
 
@@ -65,7 +72,7 @@ module Sidebar = {
           // mobile
           Cn.on("text-base leading-6", isMobile),
           // active
-          Cn.on("text-white bg-gray-900", isActiveRoute),
+          Cn.on("text-white bg-gray-700", isActiveRoute),
           // not active
           Cn.on(
             "text-gray-300 hover:text-white hover:bg-gray-700 focus:text-white",
@@ -220,6 +227,12 @@ module Sidebar = {
                              route={item.route} key={j|sidebarlink-$index|j}>
                              {item.icon(~className=iconClassName, ())}
                              {React.string(item.label)}
+                             {item.soon
+                                ? <span
+                                    className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full leading-4 capitalize bg-gray-900 text-gray-500">
+                                    {React.string("Soon")}
+                                  </span>
+                                : React.null}
                            </SidebarLink>;
                          },
                        )
@@ -348,7 +361,7 @@ module NavbarTop = {
   [@react.component]
   let make = () => {
     <div
-      className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none">
+      className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
       <button
         className="px-4 border-r border-cool-gray-200 text-cool-gray-400 focus:outline-none focus:bg-cool-gray-100 focus:text-cool-gray-600 lg:hidden"
         ariaLabel="Open sidebar">
