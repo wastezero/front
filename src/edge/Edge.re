@@ -21,25 +21,27 @@ let make = (~cfg, ~manifest, ~chunksClient, ~html, ()) => {
     let authzCookie =
       Express.Request.cookies(req)
       |> Option.mapWithDefault(_, None, cookies =>
-           Js.Dict.get(cookies, "ipsys-token")
+           Js.Dict.get(cookies, "user-token-insecure")
          )
       |> Option.mapWithDefault(_, None, token =>
            Some(Json.Decode.string(token))
          );
 
+    Js.log2("authToken", authzCookie);
+
     let serverUrl = EdgeRouter.getServerUrl(uri);
-    let ctx = EdgeRouter.getCtx(uri);
 
     let userPromise =
       switch (authzCookie) {
       | Some(token) =>
         let headers =
           Fetch.Headers.makeWithInit(
-            Fetch.HeadersInit.make({"Cookie": {j|ipsys-token=$(token)|j}}),
+            Fetch.HeadersInit.make({"Authorization": {j|Bearer $token|j}}),
           );
 
+        Js.log("sending request fetchUserProfile");
         Js.Promise.(
-          Auth.fetchUserProfile(~headers, 0)
+          Auth.fetchUserProfile(~headers, ())
           |> then_(result => {
                let user =
                  Result.mapWithDefault(result, None, user => Some(user));
@@ -54,10 +56,11 @@ let make = (~cfg, ~manifest, ~chunksClient, ~html, ()) => {
     Js.Promise.(
       userPromise
       |> then_(user => {
+           Js.log2("user found", user != None);
            let state: Config.state = {
              serverUrl,
-             ctx,
              user,
+             token: authzCookie,
              prefetched: true,
              deviceType:
                switch (deviceType) {

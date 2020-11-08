@@ -1,9 +1,10 @@
 open Belt;
 
-type identityCtx =
+type userCtx =
   | AdminCtx
   | RestaurantCtx
-  | ManagerCtx;
+  | ManagerCtx
+  | ClientCtx;
 
 type listState =
   | List
@@ -36,7 +37,7 @@ type t =
 
 let isProtected =
   fun
-  | Auth(Login) => false
+  | Auth(_) => false
   | _ => true;
 
 let toString = route => {
@@ -185,20 +186,15 @@ let setUrlParams = (params: list((string, string))) => {
   ReasonReactRouter.push(url);
 };
 
-let getParamValue = (~url: option(ReasonReact.Router.url)=?, param, ()) => {
-  let locationSearch = [%raw {|location.search|}];
-  let searchParams =
-    switch (url) {
-    | Some(url) => Webapi.Url.URLSearchParams.make(url.search)
-    | None => Webapi.Url.URLSearchParams.make(locationSearch)
-    };
-
+let getParamValue = (~url: ReasonReact.Router.url, param, ()) => {
+  let searchParams = Webapi.Url.URLSearchParams.make(url.search);
   let value = Webapi.Url.URLSearchParams.get(param, searchParams);
   value;
 };
 
-let useParamValue = paramName => {
-  let (value, setValue) = React.useState(() => getParamValue(paramName, ()));
+let useParamValue = (~url: ReasonReact.Router.url, paramName) => {
+  let (value, setValue) =
+    React.useState(() => getParamValue(~url, paramName, ()));
   let handleValueChange = value => {
     let searchParams =
       Webapi.Url.URLSearchParams.make([%raw {|location.search|}]);
@@ -212,7 +208,7 @@ let useParamValue = paramName => {
            key == paramName
              ? None
              : (
-               switch (getParamValue(key, ())) {
+               switch (getParamValue(~url, key, ())) {
                | Some(value) => Some((key, value))
                | None => None
                }

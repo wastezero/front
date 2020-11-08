@@ -1,9 +1,67 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type user_profile = { id: int; authentication_token: string; email: string }
+type user_profile = {
+  id: int;
+  authentication_token: string;
+  email: string;
+  name: string;
+  role: string
+}
+
+type restaurant_registration_form = {
+  name: string;
+  cuisine: string;
+  avatar: string;
+  website: string;
+  description: string;
+  contacts: string;
+  email: string;
+  password: string;
+  password_confirmation: string
+}
+
+type restaurant_registration_form_wrapper = {
+  user: restaurant_registration_form
+}
+
+type restaurant = {
+  id: int;
+  avatar: string;
+  contacts: string;
+  cuisine: string;
+  description: string;
+  name: string;
+  status: string
+}
+
+type registration_response = {
+  id: int;
+  authentication_token: string;
+  email: string
+}
+
+type pagination_meta = {
+  current_page: int;
+  total_pages: int;
+  total_count: int
+}
 
 type pagination = { limit: int; page: int }
+
+type manager_registration_form = {
+  email: string;
+  password: string;
+  password_confirmation: string;
+  name: string;
+  branch_id: int
+}
+
+type manager_registration_form_wrapper = { user: manager_registration_form }
+
+type login_credentials = { email: string; password: string }
+
+type login_credentials_wrapper = { user: login_credentials }
 
 type error = { status: int; message: string; errors: string list }
 
@@ -19,16 +77,21 @@ type cfg = {
   analytics_key: string
 }
 
-type auth_profile = { id: int; authentication_token: string; email: string }
+type address = {
+  id: int;
+  city_name: string;
+  country_name: string;
+  house_number: string;
+  street: string;
+  zip_code: string
+}
 
-type auth_credentials = { email: string; password: string }
-
-type auth_credentials_wrapper = { user: auth_credentials }
+type branch = { id: int; address: address; restaurant: restaurant }
 
 type app_state = {
-  ctx: string;
   serverUrl: string option;
   user: user_profile option;
+  token: string option;
   prefetched: bool;
   deviceType: string
 }

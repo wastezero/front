@@ -47,6 +47,7 @@ let restaurants = [
 
 [@react.component]
 let make = () => {
+  let (user, _) = Auth.UserContext.useUser();
   <main>
     <div className="bg-white shadow">
       <div className="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
@@ -55,21 +56,29 @@ let make = () => {
             // <!-- Profile -->
 
               <div className="flex items-center">
-                <img
-                  className="hidden h-15 w-15 rounded-full sm:block"
-                  src="https://media-exp1.licdn.com/dms/image/C4D03AQE2qeFOktdI9Q/profile-displayphoto-shrink_100_100/0?e=1608768000&v=beta&t=CMdOXf5hQMRh6rB0xd2u3GSmHr6o78tFYELb5s244ps"
-                  alt=""
-                />
+                <span
+                  className="sm:inline-flex items-center justify-center hidden h-15 w-15 rounded-full p-1 bg-gray-500">
+                  <Icons.HeroIcons.UserSolid
+                    className="text-white h-14 w-14"
+                  />
+                </span>
                 <div>
                   <div className="flex items-center">
-                    <img
-                      className="h-15 w-15 rounded-full sm:hidden"
-                      src="https://media-exp1.licdn.com/dms/image/C4D03AQE2qeFOktdI9Q/profile-displayphoto-shrink_100_100/0?e=1608768000&v=beta&t=CMdOXf5hQMRh6rB0xd2u3GSmHr6o78tFYELb5s244ps"
-                      alt=""
-                    />
+                    <span
+                      className="inline-flex items-center justify-center h-15 w-15 p-1 rounded-full bg-gray-500 sm:hidden">
+                      <Icons.HeroIcons.UserSolid
+                        className="text-white h-14 w-14"
+                      />
+                    </span>
                     <h1
                       className="ml-3 text-2xl font-bold leading-7 text-cool-gray-900 sm:leading-9 sm:truncate">
-                      {React.string({j|Good morning, Daneker Bekker|j})}
+                      {let name =
+                         switch (user) {
+                         | Authorized(user) => React.string(user.name)
+                         | Loading => <LoadingSpinner />
+                         | Guest => React.string({j|not reachable|j})
+                         };
+                       React.string({j|Welcome back, $name|j})}
                     </h1>
                   </div>
                   <dl

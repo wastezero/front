@@ -1,10 +1,12 @@
 type internalState;
 
 type form('parameters, 'result, 'error) = {
-  submit: 'parameters => unit,
+  submit: 'parameters => Js.Promise.t(result('result, 'error)),
   mutable internalState,
   isSubmitting: bool,
   isValid: unit => bool,
+  validate: unit => bool,
+  showErrors: bool,
 };
 
 type shouldDisplayError('error) = {

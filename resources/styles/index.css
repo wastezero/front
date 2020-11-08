@@ -1,5 +1,7 @@
+/* purgecss start ignore */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
+/* purgecss end ignore */
 
 @import 'tailwindcss/utilities';
 
@@ -13,3 +15,22 @@
   font-family: 'Hauss';
   src: url(../assets/fonts/ALSHauss.ttf);
 } */
+
+.loadingspinner {
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: loadingspin 1s linear infinite;
+}
+
+@keyframes loadingspin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#root {
+  height: 100vh;
+}

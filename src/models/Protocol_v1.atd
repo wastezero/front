@@ -4,6 +4,12 @@ type decimal = string wrap <ocaml t="Decimal.t" wrap="Decimal.fromString" unwrap
 
 type datetime = string wrap <ocaml t="DateTime.t" wrap="DateTime.fromString" unwrap="DateTime.toString">
 
+type pagination_meta = {
+  current_page: int;
+  total_pages: int;
+  total_count: int;
+}
+
 type cfg = {
   app_url: string;
   cms_api_url: string;
@@ -13,24 +19,24 @@ type cfg = {
 }
 
 type app_state = {
-  ~ctx <ocaml default="\"user\"">: string;
   ?serverUrl: string nullable;
   ?user: user_profile nullable;
+  ?token: string nullable;
   ~prefetched <ocaml default="false">: bool;
   ~deviceType <ocaml default="\"\"">: string;
 }
 
 (* Auth *)
-type auth_credentials = {
+type login_credentials = {
   email: string;
   password: string;
 }
 
-type auth_credentials_wrapper = {
-  user: auth_credentials;
+type login_credentials_wrapper = {
+  user: login_credentials;
 }
 
-type auth_profile = {
+type registration_response = {
   id: int;
   authentication_token: string;
   email: string;
@@ -40,6 +46,8 @@ type user_profile = {
   id: int;
   authentication_token: string;
   email: string;
+  name: string;
+  role: string;
 }
 
 type error = {
@@ -51,4 +59,57 @@ type error = {
 type pagination = {
   limit: int;
   page: int;
+}
+
+type manager_registration_form = {
+  email: string;
+  password: string;
+  password_confirmation: string;
+  name: string;
+  branch_id: int;
+}
+
+type manager_registration_form_wrapper = {
+  user: manager_registration_form;
+}
+
+type restaurant_registration_form = {
+  name: string;
+  cuisine: string;
+  avatar: string;
+  website: string;
+  description: string;
+  contacts: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+type restaurant_registration_form_wrapper = {
+  user: restaurant_registration_form;
+}
+
+type address = {
+  id: int;
+  city_name: string;
+  country_name: string;
+  house_number: string;
+  street: string;
+  zip_code: string;
+}
+
+type restaurant = {
+  id: int;
+  avatar: string;
+  contacts: string;
+  cuisine: string;
+  description: string;
+  name: string;
+  status: string;
+}
+
+type branch = {
+  id: int;
+  address: address;
+  restaurant: restaurant;
 }

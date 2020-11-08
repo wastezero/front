@@ -5,7 +5,10 @@ open Toast;
 let make = (~state: Config.state) => {
   let _cfg = Config.getConfig();
   let initialUser = getInitialUser(~prefetched=state.prefetched, state.user);
-  let initialCtx = getInitialCtx(state.ctx);
+  let initialCtx =
+    getInitialCtx(
+      Belt.Option.mapWithDefault(state.user, "client", user => user.role),
+    );
 
   let (user, dispatchAuth) = useAuthContext(initialUser);
   let (ctx, dispatchCtx) = useCtxContext(initialCtx);

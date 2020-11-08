@@ -9,7 +9,7 @@ let make = () => {
     [|toasts|],
   );
   <div
-    className="absolute p-2 pb-4 z-50 top-0 right-0 pr-4 pt-4 flex flex-col space-y-2 max-h-full overflow-x-scroll">
+    className="fixed p-2 pb-4 z-50 top-0 right-0 pr-4 pt-4 flex flex-col space-y-2 max-h-full overflow-x-scroll">
     {toasts
      |> Belt.List.map(
           _,

@@ -18,7 +18,7 @@ module BranchRowItem = {
       onClick={_ => Route.navigateTo(Account(Branches(ItemView(item.id))))}>
       <td>
         <Link
-          route={Account(Orders(ItemView(item.id)))}
+          route={Account(Branches(ItemView(item.id)))}
           className="inline-flex space-x-2 items-center justify-between px-6 pr-2 py-4 group text-left">
           <p
             className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
@@ -145,10 +145,10 @@ let make = () => {
       <div className="align-middle min-w-full overflow-x-auto overflow-hidden">
         <div className="flex px-6 py-4">
           <h3 className="text-xl font-semibold font-display text-gray-900">
-            {React.string({j|Orders|j})}
+            {React.string({j|Branches|j})}
           </h3>
           <Link
-            route={Route.Account(Orders(Create))}
+            route={Route.Account(Branches(Create))}
             className="text-sm bg-transparent ml-auto cursor-pointer hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded">
             {React.string({j|Create|j})}
           </Link>

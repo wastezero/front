@@ -49,8 +49,8 @@ let inject = (~cfg: Config.cfg, ~url: string, ~prefetched=false, html) => {
 
   let state: Config.state = {
     serverUrl,
-    ctx,
     user: None,
+    token: None,
     prefetched,
     deviceType: "desktop",
   };

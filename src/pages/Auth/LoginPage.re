@@ -1,4 +1,5 @@
 open Models;
+open Wis;
 
 [@bs.module "assets/images/logo.png"] external logoUrl: string = "default";
 
@@ -6,9 +7,11 @@ open Models;
 let make = () => {
   let (_, dispatch) = Auth.UserContext.useUser();
   let (_, dispatchToasts) = Toast.ToastsContext.useToasts();
+  let (_, dispatchCtx) = Auth.CtxContext.useCtx();
+  let url = Route.useUrl();
 
   let handleRouteNavigation = () => {
-    let return_to = Route.getParamValue("return_to", ());
+    let return_to = Route.getParamValue(~url, "return_to", ());
     switch (return_to) {
     | Some(uri) => ReasonReactRouter.push(uri)
     | None =>
@@ -25,9 +28,16 @@ let make = () => {
     };
   };
 
-  let submit = (credentials: Auth.credentials) => {
+  // let (passwordHidden, setPasswordHidden) = React.useState(() => true);
+
+  let form = Form.useForm(~submit=AuthService.signin);
+
+  let email = Form.useField(~form, ~initialValue="", value => Ok(value));
+  let password = Form.useField(~form, ~initialValue="", value => Ok(value));
+
+  let onSubmitForm = (credentials: AuthService.login_credentials) => {
     Js.Promise.(
-      Auth.signin(credentials)
+      form.submit(credentials)
       |> then_(result => {
            let () =
              switch (result) {
@@ -57,16 +67,9 @@ let make = () => {
              };
            resolve(result);
          })
-    );
+    )
+    |> ignore;
   };
-
-  // let (passwordHidden, setPasswordHidden) = React.useState(() => true);
-
-  let form = Form.useForm(~submit);
-
-  let email = Form.useField(~form, ~initialValue="", value => Ok(value));
-  let password = Form.useField(~form, ~initialValue="", value => Ok(value));
-
   <div
     className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -85,7 +88,7 @@ let make = () => {
         </h3>
         <form
           onSubmit={ev => {
-            form.submit({email: email.value, password: password.value});
+            onSubmitForm({email: email.value, password: password.value});
             ReactEvent.Synthetic.preventDefault(
               ReactEvent.toSyntheticEvent(ev),
             );
@@ -147,11 +150,13 @@ let make = () => {
           </div>
           <div className="mt-6">
             <span className="block w-full rounded-md shadow-sm">
-              <button
+              <Button
                 type_="submit"
+                disabled={form.isSubmitting}
+                state={form.isSubmitting ? `Loading : `Default}
                 className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                 {React.string({j|Sign in|j})}
-              </button>
+              </Button>
             </span>
           </div>
           <p

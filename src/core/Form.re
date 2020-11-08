@@ -22,10 +22,12 @@ type internalState = {
 };
 
 type form('parameters, 'result, 'error) = {
-  submit: 'parameters => unit,
+  submit: 'parameters => Js.Promise.t(result('result, 'error)),
   mutable internalState,
   isSubmitting: bool,
   isValid: unit => bool,
+  validate: unit => bool,
+  showErrors: bool,
 };
 
 let addField = (form, handler, validator) => {
@@ -46,26 +48,31 @@ let addField = (form, handler, validator) => {
 };
 
 let useForm = (~submit as sendSubmit) => {
+  open Js.Promise;
+
   let (submitting, setSubmitting) = React.useState(() => false);
+  let (showErrors, setShowErrors) = React.useState(() => false);
 
   let internalState = {submit: () => (), isValid: () => true};
 
   {
     submit: parameters => {
       setSubmitting(_ => true);
-
-      Js.Promise.(
-        sendSubmit(parameters)
-        |> then_(result => {
-             setSubmitting(_ => false) |> ignore;
-             resolve(result);
-           })
-        |> ignore
-      );
+      sendSubmit(parameters)
+      |> then_(result => {
+           setSubmitting(_ => false) |> ignore;
+           resolve(result);
+         });
     },
     internalState,
     isSubmitting: submitting,
+    showErrors,
     isValid: () => internalState.isValid(),
+    validate: () => {
+      let valid = internalState.isValid();
+      setShowErrors(_ => !valid);
+      valid;
+    },
   };
 };
 
@@ -77,13 +84,13 @@ module ExternalState = {
         ~form,
         ~state as (value, setValue),
         validator,
-        ~displayError=({error: _, isTouched, submitted}) => {
-                        !isTouched && submitted
-                      },
+        ~displayError as _=({error: _, isTouched, submitted}) => {
+                             !isTouched && submitted
+                           },
         reducer,
       ) => {
-    let (isTouched, setIsTouched) = React.useState(() => false);
-    let (submitted, setIsSubmitted) = React.useState(() => false);
+    let (_isTouched, setIsTouched) = React.useState(() => false);
+    let (_submitted, setIsSubmitted) = React.useState(() => false);
     let onSubmit = () => {
       setIsTouched(_ => false);
       setIsSubmitted(_ => true);
@@ -92,10 +99,18 @@ module ExternalState = {
       validator(value);
     };
     addField(form, onSubmit, () => Belt.Result.isOk(validatedValue));
+
+    React.useEffect1(
+      () => {
+        Js.log2("showErrors in field", form.showErrors);
+        None;
+      },
+      [|form.showErrors|],
+    );
     let valueForDisplay = {
       switch (validatedValue) {
       | Error(error) =>
-        if (displayError({error, isTouched, submitted})) {
+        if (form.showErrors) {
           Error(error);
         } else {
           Ok(value);

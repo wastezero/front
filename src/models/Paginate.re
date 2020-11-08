@@ -3,6 +3,10 @@ type t = {
   limit: option(int),
 };
 
+type action =
+  | Next
+  | Previous;
+
 let encode: t => Js.Json.t =
   paginate =>
     switch (paginate.limit) {

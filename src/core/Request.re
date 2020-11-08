@@ -1,6 +1,5 @@
 /* Http requests */
 type error = Protocol_v1_t.error;
-
 let decodeError: Atdgen_codec_runtime.Json.t => error =
   Atd.decode(Protocol_v1_bs.read_error);
 
@@ -8,11 +7,9 @@ type state('data) = [ | `Loading | `Error(error) | `Data('data)];
 
 type action('data) = [ | `Fetch | `Fetched('data) | `Failed(error)];
 
-type grid('data) = Atd.Grid_wrap.t('data);
-
 type params = {
   filter: list((string, Js.Json.t)),
-  paginate: Paginate.t,
+  params: option(list((string, Js.Json.t))),
 };
 
 let processResponse = (decode, resp: Fetch.Response.t) =>
@@ -44,28 +41,66 @@ let processResponse = (decode, resp: Fetch.Response.t) =>
   );
 
 let get:
-  (~headers: 'a=?, ~decode: Js.Json.t => 't, string) =>
+  (
+    ~headers: 'a=?,
+    ~responseHandler: (Js.Json.t => 't, Fetch.response) =>
+                      Js.Promise.t(result('t, error))
+                        =?,
+    ~decode: Js.Json.t => 't,
+    string
+  ) =>
   Js.Promise.t(result('t, error)) =
-  (~headers as _=?, ~decode, url) => {
-    HttpClient.get(url) |> Js.Promise.then_(processResponse(decode));
+  (~headers=?, ~responseHandler=?, ~decode, url) => {
+    let responseHandler =
+      Belt.Option.getWithDefault(responseHandler, processResponse);
+
+    HttpClient.get(~headers?, url)
+    |> Js.Promise.then_(responseHandler(decode));
   };
 
 let post:
-  (~headers: 'a=?, ~decode: Js.Json.t => 't, string, Js.Json.t) =>
+  (
+    ~headers: 'a=?,
+    ~responseHandler: (Js.Json.t => 't, Fetch.response) =>
+                      Js.Promise.t(result('t, error))
+                        =?,
+    ~decode: Js.Json.t => 't,
+    string,
+    Js.Json.t
+  ) =>
   Js.Promise.t(result('t, error)) =
-  (~headers=?, ~decode, url, payload) => {
+  (~headers=?, ~responseHandler=?, ~decode, url, payload) => {
+    let responseHandler =
+      Belt.Option.getWithDefault(responseHandler, processResponse);
     HttpClient.post(~headers?, url, payload)
-    |> Js.Promise.then_(processResponse(decode));
+    |> Js.Promise.then_(responseHandler(decode));
   };
 
 let put:
-  (~headers: 'a=?, ~decode: Js.Json.t => 't, string, Js.Json.t) =>
+  (
+    ~headers: 'a=?,
+    ~responseHandler: (Js.Json.t => 't, Fetch.response) =>
+                      Js.Promise.t(result('t, error))
+                        =?,
+    ~decode: Js.Json.t => 't,
+    string,
+    Js.Json.t
+  ) =>
   Js.Promise.t(result('t, error)) =
-  (~headers=?, ~decode, url, payload) => {
+  (~headers=?, ~responseHandler=?, ~decode, url, payload) => {
+    let responseHandler =
+      Belt.Option.getWithDefault(responseHandler, processResponse);
+
     HttpClient.put(~headers?, url, payload)
-    |> Js.Promise.then_(processResponse(decode));
+    |> Js.Promise.then_(responseHandler(decode));
   };
-let useGrid = (~url: string, ~params=?, ~decode, ()) => {
+
+let useGrid = (~headers: 'a=?, ~url: string, ~params=?, ~decode, ()) => {
+  let justInitialized = React.useRef(true);
+  let routeUrl = Route.useUrl();
+
+  let (page, setPage) = React.useState(() => 1);
+
   let (state, dispatch) =
     ReactUpdate.useReducer(`Loading, (action, _) => {
       switch (action) {
@@ -74,22 +109,34 @@ let useGrid = (~url: string, ~params=?, ~decode, ()) => {
           `Loading,
           ({send}) => {
             open Js.Promise;
-            let uri =
+            let uri = {
+              let urlParams = [
+                ("page", Js.Json.number(page |> float_of_int)),
+              ];
               switch (params) {
-              | Some({filter, paginate}) =>
+              | Some({filter, params}) =>
                 let query =
-                  Js.Dict.fromList([
-                    ("filter", Js.Json.object_(Js.Dict.fromList(filter))),
-                    ("paginate", paginate |> Paginate.encode),
-                  ])
+                  Js.Dict.fromList(
+                    urlParams
+                    @ [
+                      ("filter", Js.Json.object_(Js.Dict.fromList(filter))),
+                      ...Belt.Option.mapWithDefault(params, [], params =>
+                           params
+                         ),
+                    ],
+                  )
                   |> BsQs.stringify;
 
                 {j|$(url)?$(query)|j};
-              | None => url
+              | None =>
+                let query = Js.Dict.fromList(urlParams) |> BsQs.stringify;
+
+                {j|$(url)?$(query)|j};
               };
+            };
             Js.log2("uri", uri);
 
-            get(~decode, uri)
+            get(~headers?, ~decode, uri)
             |> then_(result =>
                  switch (result) {
                  | Ok(data) => send(`Fetched(data)) |> resolve
@@ -105,18 +152,38 @@ let useGrid = (~url: string, ~params=?, ~decode, ()) => {
       }
     });
 
+  let onPaginate = (action: Paginate.action) => {
+    let page =
+      switch (action) {
+      | Next => page + 1
+      | Previous => page - 1
+      };
+    setPage(_ => page);
+  };
+
   React.useEffect1(
     () => {
-      dispatch(`Fetch);
+      if (!justInitialized.current) {
+        dispatch(`Fetch);
+      };
       None;
     },
     [|params|],
   );
 
-  state;
+  React.useEffect1(
+    () => {
+      dispatch(`Fetch);
+      justInitialized.current = false;
+      None;
+    },
+    [|page|],
+  );
+
+  (state, page, onPaginate);
 };
 
-let useFetch = (~url: string, ~decode, ()) => {
+let useFetch = (~url: string, ~decode, ~headers=?, ~params=?, ()) => {
   let (state, dispatch) =
     React.useReducer(
       (_state, action) =>
@@ -141,14 +208,23 @@ let useFetch = (~url: string, ~decode, ()) => {
       open Js.Promise;
       switch (state) {
       | `Loading =>
-        get(~decode, url)
+        let uri =
+          switch (params) {
+          | Some(params) =>
+            let query = Js.Dict.fromList(params) |> BsQs.stringify;
+
+            {j|$(url)?$(query)|j};
+          | None => url
+          };
+        Js.log2("uri", uri);
+        get(~headers?, ~decode, uri)
         |> then_(result =>
              switch (result) {
              | Ok(data) => dispatch(`Fetched(data)) |> resolve
              | Error(err) => dispatch(`Failed(err)) |> resolve
              }
            )
-        |> ignore
+        |> ignore;
       | _ => ()
       };
 
@@ -158,67 +234,6 @@ let useFetch = (~url: string, ~decode, ()) => {
   );
 
   state;
-};
-
-let useParams = (~filters, ~limit=?, ()) => {
-  open Paginate;
-  let justInitialized = React.useRef(true);
-
-  let (pageUrlParam, setPageUrlParam) = Route.useParamValue("page");
-  let pageInitialValue =
-    pageUrlParam |> Belt.Option.mapWithDefault(_, 1, int_of_string);
-
-  let (params, setParams) =
-    React.useState(() =>
-      {
-        filter: filters,
-        paginate: {
-          page: pageInitialValue,
-          limit,
-        },
-      }
-    );
-
-  let (isLastPage, setIsLastPage) = React.useState(() => false);
-  let setIsLastPage = value => setIsLastPage(_ => value);
-
-  React.useEffect1(
-    () => {
-      if (!justInitialized.current) {
-        setParams(_ =>
-          {
-            filter: filters,
-            paginate: {
-              ...params.paginate,
-              page: 1,
-            },
-          }
-        );
-        setPageUrlParam(Some(1 |> string_of_int));
-      };
-      justInitialized.current = false;
-      None;
-    },
-    [|filters|],
-  );
-
-  let onSearch = searchText => {
-    let filters = filters @ [("query", searchText |> Js.Json.string)];
-    setParams(_ => {...params, filter: filters});
-  };
-
-  let onPaginate = page => {
-    setParams(_ => {
-                     ...params,
-                     paginate: {
-                       ...params.paginate,
-                       page,
-                     },
-                   });
-    setPageUrlParam(Some(page |> string_of_int));
-  };
-
-  (params, onSearch, onPaginate, isLastPage, setIsLastPage);
 };
 
 let useUrlFilters = (~filters) => {

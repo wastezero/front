@@ -44,9 +44,6 @@ let make: (~prefix: string, unit) => Express.Middleware.t =
         "changeOrigin": true,
         "cookieDomainRewrite": DotenvConfig.get("APP_ORIGIN_DOMAIN"),
         "secure": false,
-        "pathRewrite": {
-          "^/api/v1": "/api/v1",
-        },
         "onProxyReq": relayRequestHeaders,
         "onProxyRes": relayResponseHeaders,
       },

@@ -4,10 +4,74 @@
 type user_profile = Protocol_v1_t.user_profile = {
   id: int;
   authentication_token: string;
+  email: string;
+  name: string;
+  role: string
+}
+
+type restaurant_registration_form =
+  Protocol_v1_t.restaurant_registration_form = {
+  name: string;
+  cuisine: string;
+  avatar: string;
+  website: string;
+  description: string;
+  contacts: string;
+  email: string;
+  password: string;
+  password_confirmation: string
+}
+
+type restaurant_registration_form_wrapper =
+  Protocol_v1_t.restaurant_registration_form_wrapper = {
+  user: restaurant_registration_form
+}
+
+type restaurant = Protocol_v1_t.restaurant = {
+  id: int;
+  avatar: string;
+  contacts: string;
+  cuisine: string;
+  description: string;
+  name: string;
+  status: string
+}
+
+type registration_response = Protocol_v1_t.registration_response = {
+  id: int;
+  authentication_token: string;
   email: string
 }
 
+type pagination_meta = Protocol_v1_t.pagination_meta = {
+  current_page: int;
+  total_pages: int;
+  total_count: int
+}
+
 type pagination = Protocol_v1_t.pagination = { limit: int; page: int }
+
+type manager_registration_form = Protocol_v1_t.manager_registration_form = {
+  email: string;
+  password: string;
+  password_confirmation: string;
+  name: string;
+  branch_id: int
+}
+
+type manager_registration_form_wrapper =
+  Protocol_v1_t.manager_registration_form_wrapper = {
+  user: manager_registration_form
+}
+
+type login_credentials = Protocol_v1_t.login_credentials = {
+  email: string;
+  password: string
+}
+
+type login_credentials_wrapper = Protocol_v1_t.login_credentials_wrapper = {
+  user: login_credentials
+}
 
 type error = Protocol_v1_t.error = {
   status: int;
@@ -27,25 +91,25 @@ type cfg = Protocol_v1_t.cfg = {
   analytics_key: string
 }
 
-type auth_profile = Protocol_v1_t.auth_profile = {
+type address = Protocol_v1_t.address = {
   id: int;
-  authentication_token: string;
-  email: string
+  city_name: string;
+  country_name: string;
+  house_number: string;
+  street: string;
+  zip_code: string
 }
 
-type auth_credentials = Protocol_v1_t.auth_credentials = {
-  email: string;
-  password: string
-}
-
-type auth_credentials_wrapper = Protocol_v1_t.auth_credentials_wrapper = {
-  user: auth_credentials
+type branch = Protocol_v1_t.branch = {
+  id: int;
+  address: address;
+  restaurant: restaurant
 }
 
 type app_state = Protocol_v1_t.app_state = {
-  ctx: string;
   serverUrl: string option;
   user: user_profile option;
+  token: string option;
   prefetched: bool;
   deviceType: string
 }
@@ -75,6 +139,20 @@ let write_user_profile = (
             )
           ~name:"email"
           t.email
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"role"
+          t.role
       ]
     )
   )
@@ -101,7 +179,398 @@ let read_user_profile = (
               Atdgen_codec_runtime.Decode.string
               |> Atdgen_codec_runtime.Decode.field "email"
             ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          role =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "role"
+            ) json;
       } : user_profile)
+    )
+  )
+)
+let write_restaurant_registration_form = (
+  Atdgen_codec_runtime.Encode.make (fun (t : restaurant_registration_form) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"cuisine"
+          t.cuisine
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"avatar"
+          t.avatar
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"website"
+          t.website
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"description"
+          t.description
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"contacts"
+          t.contacts
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"password"
+          t.password
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"password_confirmation"
+          t.password_confirmation
+      ]
+    )
+  )
+)
+let read_restaurant_registration_form = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          cuisine =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "cuisine"
+            ) json;
+          avatar =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "avatar"
+            ) json;
+          website =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "website"
+            ) json;
+          description =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "description"
+            ) json;
+          contacts =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "contacts"
+            ) json;
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
+            ) json;
+          password =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "password"
+            ) json;
+          password_confirmation =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "password_confirmation"
+            ) json;
+      } : restaurant_registration_form)
+    )
+  )
+)
+let write_restaurant_registration_form_wrapper = (
+  Atdgen_codec_runtime.Encode.make (fun (t : restaurant_registration_form_wrapper) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_restaurant_registration_form
+            )
+          ~name:"user"
+          t.user
+      ]
+    )
+  )
+)
+let read_restaurant_registration_form_wrapper = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          user =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_restaurant_registration_form
+              |> Atdgen_codec_runtime.Decode.field "user"
+            ) json;
+      } : restaurant_registration_form_wrapper)
+    )
+  )
+)
+let write_restaurant = (
+  Atdgen_codec_runtime.Encode.make (fun (t : restaurant) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"avatar"
+          t.avatar
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"contacts"
+          t.contacts
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"cuisine"
+          t.cuisine
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"description"
+          t.description
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"status"
+          t.status
+      ]
+    )
+  )
+)
+let read_restaurant = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          avatar =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "avatar"
+            ) json;
+          contacts =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "contacts"
+            ) json;
+          cuisine =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "cuisine"
+            ) json;
+          description =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "description"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          status =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "status"
+            ) json;
+      } : restaurant)
+    )
+  )
+)
+let write_registration_response = (
+  Atdgen_codec_runtime.Encode.make (fun (t : registration_response) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"authentication_token"
+          t.authentication_token
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
+      ]
+    )
+  )
+)
+let read_registration_response = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          authentication_token =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "authentication_token"
+            ) json;
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
+            ) json;
+      } : registration_response)
+    )
+  )
+)
+let write_pagination_meta = (
+  Atdgen_codec_runtime.Encode.make (fun (t : pagination_meta) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"current_page"
+          t.current_page
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"total_pages"
+          t.total_pages
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"total_count"
+          t.total_count
+      ]
+    )
+  )
+)
+let read_pagination_meta = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          current_page =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "current_page"
+            ) json;
+          total_pages =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "total_pages"
+            ) json;
+          total_count =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "total_count"
+            ) json;
+      } : pagination_meta)
     )
   )
 )
@@ -144,6 +613,187 @@ let read_pagination = (
               |> Atdgen_codec_runtime.Decode.field "page"
             ) json;
       } : pagination)
+    )
+  )
+)
+let write_manager_registration_form = (
+  Atdgen_codec_runtime.Encode.make (fun (t : manager_registration_form) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"password"
+          t.password
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"password_confirmation"
+          t.password_confirmation
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"branch_id"
+          t.branch_id
+      ]
+    )
+  )
+)
+let read_manager_registration_form = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
+            ) json;
+          password =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "password"
+            ) json;
+          password_confirmation =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "password_confirmation"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          branch_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "branch_id"
+            ) json;
+      } : manager_registration_form)
+    )
+  )
+)
+let write_manager_registration_form_wrapper = (
+  Atdgen_codec_runtime.Encode.make (fun (t : manager_registration_form_wrapper) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_manager_registration_form
+            )
+          ~name:"user"
+          t.user
+      ]
+    )
+  )
+)
+let read_manager_registration_form_wrapper = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          user =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_manager_registration_form
+              |> Atdgen_codec_runtime.Decode.field "user"
+            ) json;
+      } : manager_registration_form_wrapper)
+    )
+  )
+)
+let write_login_credentials = (
+  Atdgen_codec_runtime.Encode.make (fun (t : login_credentials) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"email"
+          t.email
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"password"
+          t.password
+      ]
+    )
+  )
+)
+let read_login_credentials = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          email =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "email"
+            ) json;
+          password =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "password"
+            ) json;
+      } : login_credentials)
+    )
+  )
+)
+let write_login_credentials_wrapper = (
+  Atdgen_codec_runtime.Encode.make (fun (t : login_credentials_wrapper) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_login_credentials
+            )
+          ~name:"user"
+          t.user
+      ]
+    )
+  )
+)
+let read_login_credentials_wrapper = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          user =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_login_credentials
+              |> Atdgen_codec_runtime.Decode.field "user"
+            ) json;
+      } : login_credentials_wrapper)
     )
   )
 )
@@ -323,8 +973,8 @@ let read_cfg = (
     )
   )
 )
-let write_auth_profile = (
-  Atdgen_codec_runtime.Encode.make (fun (t : auth_profile) ->
+let write_address = (
+  Atdgen_codec_runtime.Encode.make (fun (t : address) ->
     (
     Atdgen_codec_runtime.Encode.obj
       [
@@ -339,20 +989,41 @@ let write_auth_profile = (
             (
             Atdgen_codec_runtime.Encode.string
             )
-          ~name:"authentication_token"
-          t.authentication_token
+          ~name:"city_name"
+          t.city_name
         ;
           Atdgen_codec_runtime.Encode.field
             (
             Atdgen_codec_runtime.Encode.string
             )
-          ~name:"email"
-          t.email
+          ~name:"country_name"
+          t.country_name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"house_number"
+          t.house_number
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"street"
+          t.street
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"zip_code"
+          t.zip_code
       ]
     )
   )
 )
-let read_auth_profile = (
+let read_address = (
   Atdgen_codec_runtime.Decode.make (fun json ->
     (
       ({
@@ -362,90 +1033,92 @@ let read_auth_profile = (
               Atdgen_codec_runtime.Decode.int
               |> Atdgen_codec_runtime.Decode.field "id"
             ) json;
-          authentication_token =
+          city_name =
             Atdgen_codec_runtime.Decode.decode
             (
               Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "authentication_token"
+              |> Atdgen_codec_runtime.Decode.field "city_name"
             ) json;
-          email =
+          country_name =
             Atdgen_codec_runtime.Decode.decode
             (
               Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "email"
+              |> Atdgen_codec_runtime.Decode.field "country_name"
             ) json;
-      } : auth_profile)
+          house_number =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "house_number"
+            ) json;
+          street =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "street"
+            ) json;
+          zip_code =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "zip_code"
+            ) json;
+      } : address)
     )
   )
 )
-let write_auth_credentials = (
-  Atdgen_codec_runtime.Encode.make (fun (t : auth_credentials) ->
+let write_branch = (
+  Atdgen_codec_runtime.Encode.make (fun (t : branch) ->
     (
     Atdgen_codec_runtime.Encode.obj
       [
           Atdgen_codec_runtime.Encode.field
             (
-            Atdgen_codec_runtime.Encode.string
+            Atdgen_codec_runtime.Encode.int
             )
-          ~name:"email"
-          t.email
+          ~name:"id"
+          t.id
         ;
           Atdgen_codec_runtime.Encode.field
             (
-            Atdgen_codec_runtime.Encode.string
+            write_address
             )
-          ~name:"password"
-          t.password
-      ]
-    )
-  )
-)
-let read_auth_credentials = (
-  Atdgen_codec_runtime.Decode.make (fun json ->
-    (
-      ({
-          email =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "email"
-            ) json;
-          password =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "password"
-            ) json;
-      } : auth_credentials)
-    )
-  )
-)
-let write_auth_credentials_wrapper = (
-  Atdgen_codec_runtime.Encode.make (fun (t : auth_credentials_wrapper) ->
-    (
-    Atdgen_codec_runtime.Encode.obj
-      [
+          ~name:"address"
+          t.address
+        ;
           Atdgen_codec_runtime.Encode.field
             (
-            write_auth_credentials
+            write_restaurant
             )
-          ~name:"user"
-          t.user
+          ~name:"restaurant"
+          t.restaurant
       ]
     )
   )
 )
-let read_auth_credentials_wrapper = (
+let read_branch = (
   Atdgen_codec_runtime.Decode.make (fun json ->
     (
       ({
-          user =
+          id =
             Atdgen_codec_runtime.Decode.decode
             (
-              read_auth_credentials
-              |> Atdgen_codec_runtime.Decode.field "user"
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
             ) json;
-      } : auth_credentials_wrapper)
+          address =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_address
+              |> Atdgen_codec_runtime.Decode.field "address"
+            ) json;
+          restaurant =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_restaurant
+              |> Atdgen_codec_runtime.Decode.field "restaurant"
+            ) json;
+      } : branch)
     )
   )
 )
@@ -474,13 +1147,6 @@ let write_app_state = (
     (
     Atdgen_codec_runtime.Encode.obj
       [
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"ctx"
-          t.ctx
-        ;
           Atdgen_codec_runtime.Encode.field_o
             (
             Atdgen_codec_runtime.Encode.string
@@ -494,6 +1160,13 @@ let write_app_state = (
             )
           ~name:"user"
           t.user
+        ;
+          Atdgen_codec_runtime.Encode.field_o
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"token"
+          t.token
         ;
           Atdgen_codec_runtime.Encode.field
             (
@@ -516,12 +1189,6 @@ let read_app_state = (
   Atdgen_codec_runtime.Decode.make (fun json ->
     (
       ({
-          ctx =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.fieldDefault "ctx" "user"
-            ) json;
           serverUrl =
             Atdgen_codec_runtime.Decode.decode
             (
@@ -533,6 +1200,12 @@ let read_app_state = (
             (
               read_user_profile
               |> Atdgen_codec_runtime.Decode.fieldOptional "user"
+            ) json;
+          token =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.fieldOptional "token"
             ) json;
           prefetched =
             Atdgen_codec_runtime.Decode.decode

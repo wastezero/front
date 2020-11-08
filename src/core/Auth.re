@@ -11,33 +11,16 @@ type action =
   | UserAuthenticated(UserProfile.t, unit => unit)
   | UserSignedOut(unit => unit);
 
-type ctx = Route.identityCtx;
+type ctx = Route.userCtx;
 
 type ctxAction =
   | CtxChanged(ctx);
 
-type credentials = Protocol_v1_t.auth_credentials;
-type credentials_wrapper = Protocol_v1_t.auth_credentials_wrapper;
-
-let signin: credentials => Js.Promise.t(result(UserProfile.t, Request.error)) =
-  form => {
-    let payload: credentials_wrapper = {user: form};
-    let decode = UserProfile.decode;
-
-    Request.post(
-      ~decode,
-      "/api/v1/sign_in",
-      payload |> Atd.encode(Protocol_v1_bs.write_auth_credentials_wrapper),
-    );
-  };
-
-let fetchUserProfile = (~headers=?, _userId) => {
-  // let payload = Atd.encode(Protocol_v1_bs.write_auth_profile, {id: userId});
-  Request.post(
+let fetchUserProfile = (~headers=?, ()) => {
+  Request.get(
     ~headers?,
     ~decode=UserProfile.decode,
-    "/api/v1/user/profile",
-    Js.Json.null,
+    "/api/v1/who_am_i",
   );
 };
 
@@ -89,7 +72,11 @@ let getInitialUser = (~prefetched, user) =>
 
 let getInitialCtx = ctx =>
   switch (ctx) {
-  | _ => Route.ManagerCtx
+  | "admin" => Route.AdminCtx
+  | "restaurant" => Route.RestaurantCtx
+  | "manager" => Route.ManagerCtx
+  | "client"
+  | _ => Route.ClientCtx
   };
 
 let useAuthContext = initialUser => {
@@ -102,7 +89,7 @@ let useAuthContext = initialUser => {
           ({send}) => {
             open Js.Promise;
 
-            fetchUserProfile(0)
+            fetchUserProfile()
             |> then_(result => {
                  switch (result) {
                  | Ok(profile) => send(UserReady(profile)) |> resolve

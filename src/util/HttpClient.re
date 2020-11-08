@@ -8,26 +8,28 @@ let addDefaultHeaders = (headers: Fetch.Headers.t) => {
   append("Content-Type", "application/json", headers);
   append("Accept", "application/json", headers);
 
-  switch (Config.fetchUserToken()) {
-  | Some(token) => set("Authorization", {j|Bearer $token|j}, headers)
-  | None => ()
+  if (has("Authorization", headers)) {
+    ();
+      // Already has it
+  } else {
+    let state = Config.getState();
+    switch (state.token) {
+    | Some(token) => set("Authorization", {j|Bearer $token|j}, headers)
+    | None => ()
+    };
   };
 
   headers;
 };
 
-let get = (~headers as _=?, url) => {
-  // let headers = Option.getWithDefault(headers, defaultHeaders);
-
+let get = (~headers=?, url) => {
+  let headers =
+    Option.getWithDefault(headers, Fetch.Headers.make) |> addDefaultHeaders;
   let cfg = Config.getConfig();
 
   Fetch.fetchWithInit(
     cfg.app_url ++ url,
-    Fetch.RequestInit.make(
-      ~method_=Get,
-      // ~headers=Fetch.HeadersInit.make(headers),
-      (),
-    ),
+    Fetch.RequestInit.make(~method_=Get, ~headers=initHeaders(headers), ()),
   );
 };
 

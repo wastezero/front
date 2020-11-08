@@ -266,6 +266,7 @@ module ProfileDropdown = {
   [@react.component]
   let make = (~className=?, ()) => {
     let (isDropdownShown, setIsDropdownShown) = React.useState(() => false);
+    let (user, _) = Auth.UserContext.useUser();
 
     let activatorRef = React.useRef(Js.Nullable.null);
     let dropdownRef = React.useRef(Js.Nullable.null);
@@ -291,14 +292,17 @@ module ProfileDropdown = {
           //  ariaHaspopup="true"
           ariaLabel="User menu"
           onClick={_ => setIsDropdownShown(_ => !isDropdownShown)}>
-          <img
-            className="h-8 w-8 rounded-full"
-            src="https://media-exp1.licdn.com/dms/image/C4D03AQE2qeFOktdI9Q/profile-displayphoto-shrink_100_100/0?e=1608768000&v=beta&t=CMdOXf5hQMRh6rB0xd2u3GSmHr6o78tFYELb5s244ps"
-            alt=""
-          />
+          <span
+            className="inline-flex items-center justify-center h-8 w-8 p-1 rounded-full bg-gray-500">
+            <Icons.HeroIcons.UserSolid className="text-white h-7 w-7" />
+          </span>
           <p
             className="hidden ml-3 text-cool-gray-700 text-sm leading-5 font-medium lg:block">
-            {React.string("Daneker Bekker")}
+            {switch (user) {
+             | Authorized(user) => React.string(user.name)
+             | Loading => <LoadingSpinner />
+             | Guest => React.string({j|not reachable|j})
+             }}
           </p>
           // <!-- Heroicon name: chevron-down -->
           <Icons.HeroIcons.ChevronDown

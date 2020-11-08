@@ -8,6 +8,9 @@ Big.setRM(1);
 type cfg = Protocol_v1_t.cfg;
 type state = Protocol_v1_t.app_state;
 
+let serializeState: state => Js.Json.t =
+  Atd.encode(Protocol_v1_bs.write_app_state);
+
 let%private defaultCfg: cfg = {
   app_url: "",
   cms_api_url: "",
@@ -17,8 +20,8 @@ let%private defaultCfg: cfg = {
 };
 let%private defaultState: state = {
   serverUrl: None,
-  ctx: "user",
   user: None,
+  token: None,
   prefetched: true,
   deviceType: "",
 };
@@ -34,26 +37,16 @@ let getState = () => {
   });
 };
 
-let svcCashWithdrawal = 1;
-
-let fetchUserTokenFromStorage = () => {
-  switch (Dom.Storage.getItem("user-token", Dom.Storage.localStorage)) {
-  | Some(userId) => Some(userId)
-  | None => None
-  };
-};
-
-let fetchUserToken = () => {
-  switch ([%external localStorage]) {
-  | Some(_) => fetchUserTokenFromStorage()
-  | None => None
-  };
-};
+let svcCardWithdrawal = 1;
+let svcCashWithdrawal = 2;
 
 let saveUserToken = payload => {
   switch (payload) {
   | Some(userId) =>
-    Dom.Storage.setItem("user-token", userId, Dom.Storage.localStorage)
-  | None => Dom.Storage.removeItem("user-token", Dom.Storage.localStorage)
+    Cookie.set(Cookie.document, "user-token-insecure=" ++ userId)
+  | None => Cookie.set(Cookie.document, "")
   };
+
+  let serializedState = serializeState({...getState(), token: payload});
+  Global.setState(Global.global, Global.fromJson(serializedState));
 };
