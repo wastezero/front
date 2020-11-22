@@ -28,8 +28,16 @@ let make = (~page: Route.account) => {
          | List
          | _ => <BranchList />
          }
-       | Managers(_) => React.string({j|Managers|j})
-       | Foods(_) => React.string({j|Foods|j})
+       | Managers(listState) =>
+         switch (listState) {
+         | List
+         | _ => <ManagerList />
+         }
+       | Foods(listState) =>
+         switch (listState) {
+         | List
+         | _ => <FoodList />
+         }
        | Orders(listState) =>
          switch (listState) {
          | List

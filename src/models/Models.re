@@ -26,3 +26,14 @@ module Restaurant = {
   let grid: Atdgen_codec_runtime.Json.t => grid =
     Atd.Grid_wrap.decode("restaurants", decode);
 };
+
+module Manager = {
+  type t = Protocol_v1_t.manager;
+  type grid = Atd.Grid_wrap.t(t);
+
+  let decode: Atdgen_codec_runtime.Json.t => t =
+    Atd.decode(Protocol_v1_bs.read_manager);
+
+  let grid: Atdgen_codec_runtime.Json.t => grid =
+    Atd.Grid_wrap.decode("managers", decode);
+};

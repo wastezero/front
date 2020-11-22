@@ -5,6 +5,7 @@ open Toast;
 let make = (~state: Config.state) => {
   let _cfg = Config.getConfig();
   let initialUser = getInitialUser(~prefetched=state.prefetched, state.user);
+  Js.log2("state.user", state.user);
   let initialCtx =
     getInitialCtx(
       Belt.Option.mapWithDefault(state.user, "client", user => user.role),
