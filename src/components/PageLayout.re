@@ -38,6 +38,7 @@ module Sidebar = {
   let make = () => {
     let currentRoute = Route.useUrl() |> Route.ofUrl;
     let (ctx, _) = Auth.CtxContext.useCtx();
+
     let menuItems = [
       {
         label: "Home",
@@ -55,10 +56,7 @@ module Sidebar = {
           <Icons.HeroIcons.Library ?className />;
         },
         soon: false,
-        haveAccess:
-          ctx != Route.ManagerCtx
-          && ctx != Route.RestaurantCtx
-          && ctx != Route.ClientCtx,
+        haveAccess: ctx == AdminCtx,
       },
       {
         label: "Branches",
@@ -67,7 +65,7 @@ module Sidebar = {
           <Icons.HeroIcons.OfficeBuilding ?className />;
         },
         soon: true,
-        haveAccess: ctx != Route.ClientCtx,
+        haveAccess: ctx == Route.AdminCtx || ctx == Route.RestaurantCtx,
       },
       {
         label: "Managers",
@@ -85,7 +83,7 @@ module Sidebar = {
           <Icons.HeroIcons.Menu ?className />;
         },
         soon: true,
-        haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
+        haveAccess: ctx != Route.ClientCtx,
       },
       {
         label: "Orders",
@@ -94,10 +92,11 @@ module Sidebar = {
           <Icons.HeroIcons.ShoppingBag ?className />;
         },
         soon: false,
-        haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
+        haveAccess: ctx != Route.ClientCtx,
       },
     ];
-
+    Js.log2("ctx", ctx);
+    Js.log2("menutitems", menuItems);
     <>
       // <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
       <div className="hidden">
@@ -150,29 +149,30 @@ module Sidebar = {
                        // mobile
                        "mr-4",
                      ]);
+                   menuItems
+                   |> Belt.List.keep(_, item => item.haveAccess)
+                   |> Belt.List.mapWithIndex(
+                        _,
+                        (index, item) => {
+                          let isActive = item.route == currentRoute;
+                          let iconClassName =
+                            Cn.fromList([
+                              baseIconClassName,
+                              // active
+                              Cn.on("text-gray-300", isActive),
+                              // not active
+                              Cn.on("text-gray-400", !isActive),
+                            ]);
 
-                   Belt.List.mapWithIndex(
-                     menuItems,
-                     (index, item) => {
-                       let isActive = item.route == currentRoute;
-                       let iconClassName =
-                         Cn.fromList([
-                           baseIconClassName,
-                           // active
-                           Cn.on("text-gray-300", isActive),
-                           // not active
-                           Cn.on("text-gray-400", !isActive),
-                         ]);
-
-                       <SidebarLink
-                         route={item.route}
-                         isMobile=true
-                         key={j|sidebaritem-$index|j}>
-                         {item.icon(~className=iconClassName, ())}
-                         {React.string(item.label)}
-                       </SidebarLink>;
-                     },
-                   )
+                          <SidebarLink
+                            route={item.route}
+                            isMobile=true
+                            key={j|sidebaritem-$index|j}>
+                            {item.icon(~className=iconClassName, ())}
+                            {React.string(item.label)}
+                          </SidebarLink>;
+                        },
+                      )
                    |> Belt.List.toArray
                    |> React.array}
                 </nav>
@@ -220,33 +220,35 @@ module Sidebar = {
                            // static
                            "mr-3",
                          ]);
+                       menuItems
+                       |> Belt.List.keep(_, item => item.haveAccess)
+                       |> Belt.List.mapWithIndex(
+                            _,
+                            (index, item) => {
+                              let isActive = item.route == currentRoute;
+                              let iconClassName =
+                                Cn.fromList([
+                                  baseIconClassName,
+                                  // active
+                                  Cn.on("text-gray-300", isActive),
+                                  // not active
+                                  Cn.on("text-gray-400", !isActive),
+                                ]);
 
-                       Belt.List.mapWithIndex(
-                         menuItems,
-                         (index, item) => {
-                           let isActive = item.route == currentRoute;
-                           let iconClassName =
-                             Cn.fromList([
-                               baseIconClassName,
-                               // active
-                               Cn.on("text-gray-300", isActive),
-                               // not active
-                               Cn.on("text-gray-400", !isActive),
-                             ]);
-
-                           <SidebarLink
-                             route={item.route} key={j|sidebarlink-$index|j}>
-                             {item.icon(~className=iconClassName, ())}
-                             {React.string(item.label)}
-                             {item.soon
-                                ? <span
-                                    className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full leading-4 capitalize bg-gray-900 text-gray-500">
-                                    {React.string("Soon")}
-                                  </span>
-                                : React.null}
-                           </SidebarLink>;
-                         },
-                       )
+                              <SidebarLink
+                                route={item.route}
+                                key={j|sidebarlink-$index|j}>
+                                {item.icon(~className=iconClassName, ())}
+                                {React.string(item.label)}
+                                {item.soon
+                                   ? <span
+                                       className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full leading-4 capitalize bg-gray-900 text-gray-500">
+                                       {React.string("Soon")}
+                                     </span>
+                                   : React.null}
+                              </SidebarLink>;
+                            },
+                          )
                        |> Belt.List.toArray
                        |> React.array}
                     </nav>
