@@ -4,58 +4,8 @@ module Sidebar = {
     route: Route.t,
     icon: (~className: string=?, unit) => React.element,
     soon: bool,
+    haveAccess: bool,
   };
-
-  let menuItems = [
-    {
-      label: "Home",
-      route: Route.Account(Home),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.Home ?className />;
-      },
-      soon: false,
-    },
-    {
-      label: "Restaurants",
-      route: Route.Account(Restaurants(List)),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.Library ?className />;
-      },
-      soon: false,
-    },
-    {
-      label: "Branches",
-      route: Route.Account(Branches(List)),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.OfficeBuilding ?className />;
-      },
-      soon: true,
-    },
-    {
-      label: "Managers",
-      route: Route.Account(Managers(List)),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.User ?className />;
-      },
-      soon: true,
-    },
-    {
-      label: "Foods",
-      route: Route.Account(Foods(List)),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.Menu ?className />;
-      },
-      soon: true,
-    },
-    {
-      label: "Orders",
-      route: Route.Account(Orders(List)),
-      icon: (~className=?, ()) => {
-        <Icons.HeroIcons.ShoppingBag ?className />;
-      },
-      soon: false,
-    },
-  ];
 
   module SidebarLink = {
     [@react.component]
@@ -87,6 +37,67 @@ module Sidebar = {
   [@react.component]
   let make = () => {
     let currentRoute = Route.useUrl() |> Route.ofUrl;
+    let (ctx, _) = Auth.CtxContext.useCtx();
+    let menuItems = [
+      {
+        label: "Home",
+        route: Route.Account(Home),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.Home ?className />;
+        },
+        soon: false,
+        haveAccess: true,
+      },
+      {
+        label: "Restaurants",
+        route: Route.Account(Restaurants(List)),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.Library ?className />;
+        },
+        soon: false,
+        haveAccess:
+          ctx != Route.ManagerCtx
+          && ctx != Route.RestaurantCtx
+          && ctx != Route.ClientCtx,
+      },
+      {
+        label: "Branches",
+        route: Route.Account(Branches(List)),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.OfficeBuilding ?className />;
+        },
+        soon: true,
+        haveAccess: ctx != Route.ClientCtx,
+      },
+      {
+        label: "Managers",
+        route: Route.Account(Managers(List)),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.User ?className />;
+        },
+        soon: true,
+        haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
+      },
+      {
+        label: "Foods",
+        route: Route.Account(Foods(List)),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.Menu ?className />;
+        },
+        soon: true,
+        haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
+      },
+      {
+        label: "Orders",
+        route: Route.Account(Orders(List)),
+        icon: (~className=?, ()) => {
+          <Icons.HeroIcons.ShoppingBag ?className />;
+        },
+        soon: false,
+        haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
+      },
+    ];
+
     <>
       // <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
       <div className="hidden">
@@ -266,7 +277,7 @@ module ProfileDropdown = {
   [@react.component]
   let make = (~className=?, ()) => {
     let (isDropdownShown, setIsDropdownShown) = React.useState(() => false);
-    let (user, _) = Auth.UserContext.useUser();
+    let (user, dispathUser) = Auth.UserContext.useUser();
 
     let activatorRef = React.useRef(Js.Nullable.null);
     let dropdownRef = React.useRef(Js.Nullable.null);
@@ -281,6 +292,11 @@ module ProfileDropdown = {
    */
     let onClickedInside = ev => {
       ReactEvent.Mouse.stopPropagation(ev);
+    };
+
+    let onLogout = () => {
+      Config.removeUserToken();
+      dispathUser(UserSignedOut(() => ()));
     };
 
     <div ?className>
@@ -332,7 +348,7 @@ module ProfileDropdown = {
           Cn.on("hidden", !isDropdownShown),
         ])}>
         <div
-          className="py-1 rounded-md bg-white shadow-xs"
+          className="py-1 rounded-md bg-white shadow-xs flex flex-col items-stretch"
           role="menu"
           // ariaOrientation="vertical"
           ariaLabelledby="user-menu">
@@ -348,12 +364,12 @@ module ProfileDropdown = {
             role="menuitem">
             {React.string("Settings")}
           </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150"
+          <button
+            onClick={_ => onLogout()}
+            className="text-left block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150"
             role="menuitem">
             {React.string("Logout")}
-          </a>
+          </button>
         </div>
       </div>
     </div>;

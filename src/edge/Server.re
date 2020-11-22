@@ -8,7 +8,7 @@ external createSecureServer: ('a, 'c) => 'b = "createServer";
 
 // let isDevelopment = DotenvConfig.getBool("IS_DEVELOPMENT");
 // [@bs.val] external isDevelopment: bool = "process.env.IS_DEVELOPMENT";
-let isDevelopment = false;
+let isDevelopment = true;
 
 DotenvConfig.init();
 

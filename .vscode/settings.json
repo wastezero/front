@@ -9,6 +9,6 @@
   },
   "ocaml.sandbox": {
     "kind": "esy",
-    "root": "/Users/admin/Desktop/wastezero"
+    "root": "${workspaceFolder:wastezero}"
   }
 }

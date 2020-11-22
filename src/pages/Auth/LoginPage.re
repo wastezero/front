@@ -5,26 +5,32 @@ open Wis;
 
 [@react.component]
 let make = () => {
-  let (_, dispatch) = Auth.UserContext.useUser();
+  let (user, dispatch) = Auth.UserContext.useUser();
   let (_, dispatchToasts) = Toast.ToastsContext.useToasts();
   let (_, dispatchCtx) = Auth.CtxContext.useCtx();
   let url = Route.useUrl();
 
   let handleRouteNavigation = () => {
     let return_to = Route.getParamValue(~url, "return_to", ());
-    switch (return_to) {
-    | Some(uri) => ReasonReactRouter.push(uri)
-    | None =>
-      dispatchToasts(
-        Add({
-          id: Toast.generateId(),
-          text: {j|Welcome back, Daneker Bekker|j},
-          kind: `success,
-          subtext: {j|We are happy to see you again|j},
-          onClick: () => (),
-        }),
-      );
-      Route.navigateTo(Account(Home));
+    switch (user) {
+    | Authorized(user) =>
+      let name = user.name;
+      switch (return_to) {
+      | Some(uri) => ReasonReactRouter.push(uri)
+      | None =>
+        dispatchToasts(
+          Add({
+            id: Toast.generateId(),
+            text: {j|Welcome back, $name|j},
+            kind: `success,
+            subtext: {j|We are happy to see you again|j},
+            onClick: () => (),
+          }),
+        );
+        Route.navigateTo(Account(Home));
+      };
+    | Loading => ()
+    | Guest => ()
     };
   };
 

@@ -50,3 +50,10 @@ let saveUserToken = payload => {
   let serializedState = serializeState({...getState(), token: payload});
   Global.setState(Global.global, Global.fromJson(serializedState));
 };
+
+let removeUserToken = () => {
+  Cookie.set(
+    Cookie.document,
+    "user-token-insecure=; expires = Thu, 01 Jan 1970 00:00:00 GMT",
+  );
+};

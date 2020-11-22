@@ -190,11 +190,11 @@ let make = () => {
               </th>
               <th
                 className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-cool-gray-500 uppercase tracking-wider whitespace-no-wrap">
-                {React.string({j|Experation Time|j})}
+                {React.string({j|Experation Date|j})}
               </th>
               <th
                 className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-cool-gray-500 uppercase tracking-wider whitespace-no-wrap">
-                {React.string({j|Overdue Date|j})}
+                {React.string({j|Dealine|j})}
               </th>
               <th
                 className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-cool-gray-500 uppercase tracking-wider whitespace-no-wrap">

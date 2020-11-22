@@ -75,3 +75,37 @@ module AuthService = {
     };
   };
 };
+
+module RestaurantService = {
+  type t = Protocol_v1_t.restaurant;
+
+  let%private endpoint = "admin_panel/restaurants";
+
+  let grid = (~params=?, ()) => {
+    let url = Endpoints.resource(~base=endpoint, ());
+
+    Request.useGrid(~url, ~decode=Restaurant.grid, ~params?, ());
+  };
+
+  let view = id => {
+    let url = Endpoints.resource(~base=endpoint, ~id, ());
+    Request.useFetch(~url, ~decode=Restaurant.decode, ());
+  };
+};
+
+module BranchService = {
+  type t = Protocol_v1_t.branch;
+
+  let%private endpoint = "admin_panel/branches";
+
+  let grid = (~params=?, ()) => {
+    let url = Endpoints.resource(~base=endpoint, ());
+
+    Request.useGrid(~url, ~decode=Branch.grid, ~params?, ());
+  };
+
+  let view = id => {
+    let url = Endpoints.resource(~base=endpoint, ~id, ());
+    Request.useFetch(~url, ~decode=Branch.decode, ());
+  };
+};

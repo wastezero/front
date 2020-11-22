@@ -87,7 +87,7 @@ let make =
         <div className="py-1">
           {switch (grid) {
            | `Data(items) =>
-             items.branches
+             items.data
              |> Belt.List.mapWithIndex(_, (index, item) => {
                   <div
                     key={j|wallet-$index|j}
