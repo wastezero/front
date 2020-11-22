@@ -64,6 +64,13 @@ type manager_registration_form_wrapper =
   user: manager_registration_form
 }
 
+type manager = Protocol_v1_t.manager = {
+  id: int;
+  branch_id: int;
+  name: string;
+  status: string
+}
+
 type login_credentials = Protocol_v1_t.login_credentials = {
   email: string;
   password: string
@@ -149,6 +156,10 @@ val write_manager_registration_form :  manager_registration_form Atdgen_codec_ru
 val read_manager_registration_form_wrapper :  manager_registration_form_wrapper Atdgen_codec_runtime.Decode.t
 
 val write_manager_registration_form_wrapper :  manager_registration_form_wrapper Atdgen_codec_runtime.Encode.t
+
+val read_manager :  manager Atdgen_codec_runtime.Decode.t
+
+val write_manager :  manager Atdgen_codec_runtime.Encode.t
 
 val read_login_credentials :  login_credentials Atdgen_codec_runtime.Decode.t
 

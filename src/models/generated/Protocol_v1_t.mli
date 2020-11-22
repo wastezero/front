@@ -59,6 +59,8 @@ type manager_registration_form = {
 
 type manager_registration_form_wrapper = { user: manager_registration_form }
 
+type manager = { id: int; branch_id: int; name: string; status: string }
+
 type login_credentials = { email: string; password: string }
 
 type login_credentials_wrapper = { user: login_credentials }

@@ -113,3 +113,10 @@ type branch = {
   address: address;
   restaurant: restaurant;
 }
+
+type manager = {
+  id: int;
+  branch_id: int;
+  name: string;
+  status: string;
+}

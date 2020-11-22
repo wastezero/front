@@ -64,6 +64,13 @@ type manager_registration_form_wrapper =
   user: manager_registration_form
 }
 
+type manager = Protocol_v1_t.manager = {
+  id: int;
+  branch_id: int;
+  name: string;
+  status: string
+}
+
 type login_credentials = Protocol_v1_t.login_credentials = {
   email: string;
   password: string
@@ -723,6 +730,74 @@ let read_manager_registration_form_wrapper = (
               |> Atdgen_codec_runtime.Decode.field "user"
             ) json;
       } : manager_registration_form_wrapper)
+    )
+  )
+)
+let write_manager = (
+  Atdgen_codec_runtime.Encode.make (fun (t : manager) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"branch_id"
+          t.branch_id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"status"
+          t.status
+      ]
+    )
+  )
+)
+let read_manager = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          branch_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "branch_id"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          status =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "status"
+            ) json;
+      } : manager)
     )
   )
 )
