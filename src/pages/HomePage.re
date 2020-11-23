@@ -30,6 +30,8 @@ let make = (~page: Route.account) => {
          }
        | Managers(listState) =>
          switch (listState) {
+         | ItemView(_)
+         | ItemEdit(_) => <ManagerItem />
          | List
          | _ => <ManagerList />
          }

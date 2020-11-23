@@ -97,6 +97,24 @@ module HeroIcons = {
     [@bs.module "assets/icons/heroicons/solid/user.svg"] [@react.component]
     external make: (~className: string=?, unit) => React.element = "default";
   };
+
+  module BadgeCheck = {
+    [@bs.module "assets/icons/heroicons/solid/badge-check.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module Collection = {
+    [@bs.module "assets/icons/heroicons/solid/collection.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
+
+  module SortAscending = {
+    [@bs.module "assets/icons/heroicons/outline/sort-ascending.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
 };
 
 module ManagerIllustration = {
