@@ -115,6 +115,12 @@ module HeroIcons = {
     [@react.component]
     external make: (~className: string=?, unit) => React.element = "default";
   };
+
+  module ExternalLink = {
+    [@bs.module "assets/icons/heroicons/solid/external-link.svg"]
+    [@react.component]
+    external make: (~className: string=?, unit) => React.element = "default";
+  };
 };
 
 module ManagerIllustration = {

@@ -15,11 +15,27 @@ let make = () => {
   <form
     onSubmit={ev => {
       setIsLoading(_ => true);
-      let _ =
-        Js.Global.setTimeout(
-          () => {Route.navigateTo(Account(Orders(List)))},
-          500,
-        );
+
+      let form: Order.state = {
+        order: {
+          branch_id: 1,
+          food_id: 1,
+          expires_at: deadlineField.value,
+          deadline: deadlineField.value,
+          discount_price: 200,
+        },
+      };
+      Js.Promise.(
+        OrderService.post(form)
+        |> then_(result => {
+             switch (result) {
+             | Ok((_: Order.t)) => Route.navigateTo(Account(Orders(List)))
+             | Error(_) => ()
+             };
+             resolve();
+           })
+        |> ignore
+      );
       ReactEvent.Synthetic.preventDefault(ReactEvent.toSyntheticEvent(ev));
     }}
     className="grid grid-cols-12 gap-6 pt-4 bg-white md:bg-transparent">

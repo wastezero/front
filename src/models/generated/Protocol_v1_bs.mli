@@ -51,6 +51,31 @@ type pagination_meta = Protocol_v1_t.pagination_meta = {
 
 type pagination = Protocol_v1_t.pagination = { limit: int; page: int }
 
+type order_form_body = Protocol_v1_t.order_form_body = {
+  branch_id: int;
+  food_id: int;
+  expires_at: string;
+  deadline: string;
+  discount_price: int
+}
+
+type order_create_form = Protocol_v1_t.order_create_form = {
+  order: order_form_body
+}
+
+type id = Protocol_v1_t.id = { id: int }
+
+type datetime = Protocol_v1_t.datetime
+
+type order = Protocol_v1_t.order = {
+  id: int;
+  branch: id;
+  food: id;
+  price: int;
+  expires_at: datetime;
+  deadline: datetime option
+}
+
 type manager_registration_form = Protocol_v1_t.manager_registration_form = {
   email: string;
   password: string;
@@ -103,8 +128,6 @@ type error = Protocol_v1_t.error = {
 
 type decimal = Protocol_v1_t.decimal
 
-type datetime = Protocol_v1_t.datetime
-
 type cfg = Protocol_v1_t.cfg = {
   app_url: string;
   cms_api_url: string;
@@ -149,6 +172,26 @@ val read_pagination :  pagination Atdgen_codec_runtime.Decode.t
 
 val write_pagination :  pagination Atdgen_codec_runtime.Encode.t
 
+val read_order_form_body :  order_form_body Atdgen_codec_runtime.Decode.t
+
+val write_order_form_body :  order_form_body Atdgen_codec_runtime.Encode.t
+
+val read_order_create_form :  order_create_form Atdgen_codec_runtime.Decode.t
+
+val write_order_create_form :  order_create_form Atdgen_codec_runtime.Encode.t
+
+val read_id :  id Atdgen_codec_runtime.Decode.t
+
+val write_id :  id Atdgen_codec_runtime.Encode.t
+
+val read_datetime :  datetime Atdgen_codec_runtime.Decode.t
+
+val write_datetime :  datetime Atdgen_codec_runtime.Encode.t
+
+val read_order :  order Atdgen_codec_runtime.Decode.t
+
+val write_order :  order Atdgen_codec_runtime.Encode.t
+
 val read_manager_registration_form :  manager_registration_form Atdgen_codec_runtime.Decode.t
 
 val write_manager_registration_form :  manager_registration_form Atdgen_codec_runtime.Encode.t
@@ -184,10 +227,6 @@ val write_error :  error Atdgen_codec_runtime.Encode.t
 val read_decimal :  decimal Atdgen_codec_runtime.Decode.t
 
 val write_decimal :  decimal Atdgen_codec_runtime.Encode.t
-
-val read_datetime :  datetime Atdgen_codec_runtime.Decode.t
-
-val write_datetime :  datetime Atdgen_codec_runtime.Encode.t
 
 val read_cfg :  cfg Atdgen_codec_runtime.Decode.t
 

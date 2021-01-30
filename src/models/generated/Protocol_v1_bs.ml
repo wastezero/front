@@ -51,6 +51,31 @@ type pagination_meta = Protocol_v1_t.pagination_meta = {
 
 type pagination = Protocol_v1_t.pagination = { limit: int; page: int }
 
+type order_form_body = Protocol_v1_t.order_form_body = {
+  branch_id: int;
+  food_id: int;
+  expires_at: string;
+  deadline: string;
+  discount_price: int
+}
+
+type order_create_form = Protocol_v1_t.order_create_form = {
+  order: order_form_body
+}
+
+type id = Protocol_v1_t.id = { id: int }
+
+type datetime = Protocol_v1_t.datetime
+
+type order = Protocol_v1_t.order = {
+  id: int;
+  branch: id;
+  food: id;
+  price: int;
+  expires_at: datetime;
+  deadline: datetime option
+}
+
 type manager_registration_form = Protocol_v1_t.manager_registration_form = {
   email: string;
   password: string;
@@ -102,8 +127,6 @@ type error = Protocol_v1_t.error = {
 }
 
 type decimal = Protocol_v1_t.decimal
-
-type datetime = Protocol_v1_t.datetime
 
 type cfg = Protocol_v1_t.cfg = {
   app_url: string;
@@ -623,6 +646,264 @@ let read_pagination = (
     )
   )
 )
+let write_order_form_body = (
+  Atdgen_codec_runtime.Encode.make (fun (t : order_form_body) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"branch_id"
+          t.branch_id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"food_id"
+          t.food_id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"expires_at"
+          t.expires_at
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"deadline"
+          t.deadline
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"discount_price"
+          t.discount_price
+      ]
+    )
+  )
+)
+let read_order_form_body = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          branch_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "branch_id"
+            ) json;
+          food_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "food_id"
+            ) json;
+          expires_at =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "expires_at"
+            ) json;
+          deadline =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "deadline"
+            ) json;
+          discount_price =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "discount_price"
+            ) json;
+      } : order_form_body)
+    )
+  )
+)
+let write_order_create_form = (
+  Atdgen_codec_runtime.Encode.make (fun (t : order_create_form) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_order_form_body
+            )
+          ~name:"order"
+          t.order
+      ]
+    )
+  )
+)
+let read_order_create_form = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          order =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_order_form_body
+              |> Atdgen_codec_runtime.Decode.field "order"
+            ) json;
+      } : order_create_form)
+    )
+  )
+)
+let write_id = (
+  Atdgen_codec_runtime.Encode.make (fun (t : id) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+      ]
+    )
+  )
+)
+let read_id = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+      } : id)
+    )
+  )
+)
+let write__2 = (
+    Atdgen_codec_runtime.Encode.string
+  |> Atdgen_codec_runtime.Encode.contramap (DateTime.toString)
+)
+let read__2 = (
+  (
+    Atdgen_codec_runtime.Decode.string
+  ) |> (Atdgen_codec_runtime.Decode.map (DateTime.fromString))
+)
+let write_datetime = (
+  write__2
+)
+let read_datetime = (
+  read__2
+)
+let write__6 = (
+  Atdgen_codec_runtime.Encode.option_as_constr (
+    write_datetime
+  )
+)
+let read__6 = (
+  Atdgen_codec_runtime.Decode.option_as_constr (
+    read_datetime
+  )
+)
+let write_order = (
+  Atdgen_codec_runtime.Encode.make (fun (t : order) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_id
+            )
+          ~name:"branch"
+          t.branch
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_id
+            )
+          ~name:"food"
+          t.food
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"price"
+          t.price
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_datetime
+            )
+          ~name:"expires_at"
+          t.expires_at
+        ;
+          Atdgen_codec_runtime.Encode.field_o
+            (
+            write_datetime
+            )
+          ~name:"deadline"
+          t.deadline
+      ]
+    )
+  )
+)
+let read_order = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          branch =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_id
+              |> Atdgen_codec_runtime.Decode.field "branch"
+            ) json;
+          food =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_id
+              |> Atdgen_codec_runtime.Decode.field "food"
+            ) json;
+          price =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "price"
+            ) json;
+          expires_at =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_datetime
+              |> Atdgen_codec_runtime.Decode.field "expires_at"
+            ) json;
+          deadline =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_datetime
+              |> Atdgen_codec_runtime.Decode.fieldOptional "deadline"
+            ) json;
+      } : order)
+    )
+  )
+)
 let write_manager_registration_form = (
   Atdgen_codec_runtime.Encode.make (fun (t : manager_registration_form) ->
     (
@@ -1100,21 +1381,6 @@ let write_decimal = (
 )
 let read_decimal = (
   read__1
-)
-let write__2 = (
-    Atdgen_codec_runtime.Encode.string
-  |> Atdgen_codec_runtime.Encode.contramap (DateTime.toString)
-)
-let read__2 = (
-  (
-    Atdgen_codec_runtime.Decode.string
-  ) |> (Atdgen_codec_runtime.Decode.map (DateTime.fromString))
-)
-let write_datetime = (
-  write__2
-)
-let read_datetime = (
-  read__2
 )
 let write_cfg = (
   Atdgen_codec_runtime.Encode.make (fun (t : cfg) ->

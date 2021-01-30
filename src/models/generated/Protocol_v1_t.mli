@@ -49,6 +49,29 @@ type pagination_meta = {
 
 type pagination = { limit: int; page: int }
 
+type order_form_body = {
+  branch_id: int;
+  food_id: int;
+  expires_at: string;
+  deadline: string;
+  discount_price: int
+}
+
+type order_create_form = { order: order_form_body }
+
+type id = { id: int }
+
+type datetime = DateTime.t
+
+type order = {
+  id: int;
+  branch: id;
+  food: id;
+  price: int;
+  expires_at: datetime;
+  deadline: datetime option
+}
+
 type manager_registration_form = {
   email: string;
   password: string;
@@ -79,8 +102,6 @@ type login_credentials_wrapper = { user: login_credentials }
 type error = { status: int; message: string; errors: string list }
 
 type decimal = Decimal.t
-
-type datetime = DateTime.t
 
 type cfg = {
   app_url: string;

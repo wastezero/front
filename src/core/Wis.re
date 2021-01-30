@@ -113,7 +113,7 @@ module BranchService = {
 module ManagerService = {
   type t = Protocol_v1_t.branch;
 
-  let%private endpoint = "admin_panel/managers";
+  let%private endpoint = "admin_panel/orders";
 
   let grid = (~params=?, ()) => {
     let url = Endpoints.resource(~base=endpoint, ());
@@ -124,5 +124,21 @@ module ManagerService = {
   let view = id => {
     let url = Endpoints.resource(~base=endpoint, ~id, ());
     Request.useFetch(~url, ~decode=Manager.decode, ());
+  };
+};
+
+module OrderService = {
+  let%private endpoint = "admin_panel/orders";
+
+  let grid = (~params=?, ()) => {
+    let url = Endpoints.resource(~base="client/orders", ());
+
+    Request.useGrid(~url, ~decode=Order.grid, ~params?, ());
+  };
+
+  let post = form => {
+    let url = Endpoints.resource(~base=endpoint, ());
+    let payload = Order.encode(form);
+    Request.post(~decode=Order.decode, url, payload);
   };
 };

@@ -121,3 +121,28 @@ type manager = {
   name: string;
   status: string;
 }
+
+type id = {
+  id: int;
+}
+
+type order = {
+  id: int;
+  branch: id;
+  food: id;
+  price: int;
+  expires_at: datetime;
+  ?deadline: datetime option;
+}
+
+type order_form_body = {
+  branch_id: int;
+  food_id: int;
+  expires_at: string;
+  deadline: string;
+  discount_price: int;
+}
+
+type order_create_form = {
+  order: order_form_body;
+}
