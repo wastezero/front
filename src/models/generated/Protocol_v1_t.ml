@@ -1,34 +1,6 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type address = {
-  id: int;
-  city_name: string;
-  country_name: string;
-  house_number: string;
-  street: string;
-  zip_code: string
-}
-
-type restaurant = {
-  id: int;
-  avatar: string;
-  contacts: string;
-  cuisine: string;
-  description: string;
-  name: string;
-  status: string
-}
-
-type branch = {
-  id: int;
-  address: address;
-  restaurant: restaurant;
-  manager: manager option
-}
-
-and manager = { id: int; branch: branch; name: string; status: string }
-
 type user_profile = {
   id: int;
   authentication_token: string;
@@ -51,6 +23,16 @@ type restaurant_registration_form = {
 
 type restaurant_registration_form_wrapper = {
   user: restaurant_registration_form
+}
+
+type restaurant = {
+  id: int;
+  avatar: string;
+  contacts: string;
+  cuisine: string;
+  description: string;
+  name: string;
+  status: string
 }
 
 type registration_response = {
@@ -76,6 +58,19 @@ type manager_registration_form = {
 }
 
 type manager_registration_form_wrapper = { user: manager_registration_form }
+
+type address = {
+  id: int;
+  city_name: string;
+  country_name: string;
+  house_number: string;
+  street: string;
+  zip_code: string
+}
+
+type branch = { id: int; address: address; restaurant: restaurant }
+
+type manager = { id: int; branch: branch; name: string; status: string }
 
 type login_credentials = { email: string; password: string }
 

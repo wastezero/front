@@ -6,7 +6,7 @@ let make = (~page: Route.account) => {
   <div className="h-screen flex overflow-hidden bg-cool-gray-100">
     <Sidebar />
     <div
-      className="flex-1 flex flex-col overflow-autos focus:outline-none"
+      className="flex-1 flex flex-col overflow-auto focus:outline-none"
       tabIndex=0>
       <NavbarTop />
       {switch (page) {
@@ -42,6 +42,7 @@ let make = (~page: Route.account) => {
          }
        | Orders(listState) =>
          switch (listState) {
+         | Create => <OrderCreate />
          | List
          | _ => <OrderList />
          }

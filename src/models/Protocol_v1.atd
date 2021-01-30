@@ -112,7 +112,7 @@ type branch = {
   id: int;
   address: address;
   restaurant: restaurant;
-  ?manager: manager nullable;
+  (* manager: manager nullable; *)
 }
 
 type manager = {

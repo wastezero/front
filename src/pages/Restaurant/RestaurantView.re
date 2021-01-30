@@ -63,9 +63,13 @@ module BranchCard = {
                         />
                         {React.string(Address.toString(item.address))}
                       </dd>
-                    <dt className="sr-only">
-                      {React.string({j|Account status|j})}
-                    </dt>
+                    <dd
+                      className="flex items-center text-xs leading-3 text-cool-gray-500 font-medium capitalize sm:mr-6">
+                      <Icons.HeroIcons.User
+                        className="flex-shrink-0 mr-1.5 h-5 w-5 text-cool-gray-400"
+                      />
+                      {React.string({j|Saddam Akhmetzhanov|j})}
+                    </dd>
                   </dl>
                 </div>
               </div>
@@ -86,6 +90,28 @@ module BranchCard = {
 };
 
 module Branches = {
+  let branches: list(Branch.t) = [
+    {
+      id: 1,
+      address: {
+        id: 1,
+        city_name: "Almaty",
+        country_name: "Kazakhstan",
+        house_number: "23d",
+        street: "Seifullin",
+        zip_code: "021000",
+      },
+      restaurant: {
+        id: 1,
+        avatar: "",
+        contacts: "",
+        cuisine: "",
+        description: "",
+        name: "",
+        status: "",
+      },
+    },
+  ];
   [@react.component]
   let make = () => {
     let (grid, _, _) = BranchService.grid();
@@ -95,8 +121,8 @@ module Branches = {
       <div className="flex-1 w-full  flex items-center justify-center">
         {React.string({j|ошибка|j})}
       </div>
-    | `Data((data: Atd.Grid_wrap.t(Branch.t))) =>
-      data.data
+    | `Data((_data: Atd.Grid_wrap.t(Branch.t))) =>
+      branches
       |> Belt.List.mapWithIndex(_, (index, item) =>
            <BranchCard item key={j|RestaurantCard$index|j} />
          )

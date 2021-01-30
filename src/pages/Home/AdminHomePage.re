@@ -10,7 +10,7 @@ module RestaurantCard = {
       <img
         width="100%"
         height="168"
-        className="rounded-top object-cover"
+        className="rounded-top object-cover h-72"
         src={item.avatar}
         alt=""
       />

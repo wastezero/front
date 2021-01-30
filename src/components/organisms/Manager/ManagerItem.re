@@ -17,15 +17,16 @@ let make = () => {
 
                       <div className="flex items-center space-x-3">
                         <div className="flex-shrink-0 h-12 w-12">
-                          <img
-                            className="h-12 w-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
-                            alt=""
-                          />
+                          <span
+                            className="inline-flex items-center justify-center h-12 w-12 p-1 rounded-full bg-gray-500">
+                            <Icons.HeroIcons.UserSolid
+                              className="text-white h-11 w-11"
+                            />
+                          </span>
                         </div>
                         <div className="space-y-1">
                           <div className="text-sm font-medium text-gray-900">
-                            {React.string({j|Debbie Lewis|j})}
+                            {React.string({j|Dake|j})}
                           </div>
                         </div>
                       </div>
@@ -34,12 +35,12 @@ let make = () => {
                         <button
                           type_="button"
                           className="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:w-full">
-                          {React.string({j|New Project|j})}
+                          {React.string({j|Settings|j})}
                         </button>
                         <button
                           type_="button"
-                          className="mt-3 inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 lg:ml-0 lg:mt-3 lg:w-full">
-                          {React.string({j|Invite Team|j})}
+                          className="mt-3 inline-flex items-center justify-center px-4 py-2 border border-red-500 shadow-sm text-sm font-medium rounded-md text-red-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 lg:ml-0 lg:mt-3 lg:w-full">
+                          {React.string({j|Remove account|j})}
                         </button>
                       </div>
                     </div>
@@ -53,7 +54,7 @@ let make = () => {
                           className="h-5 w-5 text-gray-400"
                         />
                         <span className="text-sm text-gray-500 font-medium">
-                          {React.string({j|Pro Member|j})}
+                          {React.string({j|Pro Manager|j})}
                         </span>
                       </div>
                     <div className="flex items-center space-x-2">
@@ -61,7 +62,7 @@ let make = () => {
                         className="h-5 w-5 text-gray-400"
                       />
                       <span className="text-sm text-gray-500 font-medium">
-                        {React.string({j|8 Projects|j})}
+                        {React.string({j|8 Branches|j})}
                       </span>
                     </div>
                   </div>
@@ -75,7 +76,7 @@ let make = () => {
               className="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pt-6 lg:border-t-0">
               <div className="flex items-center">
                 <h1 className="flex-1 text-lg font-medium">
-                  {React.string({j|Projects|j})}
+                  {React.string({j|Orders|j})}
                 </h1>
                 <div className="relative">
                   <button
@@ -141,10 +142,7 @@ let make = () => {
                                 className="absolute inset-0"
                                 ariaHidden=true
                               />
-                              {React.string({j|Workcation|j})}
-                              <span className="sr-only">
-                                {React.string({j|Running|j})}
-                              </span>
+                              {React.string({j|Baursak x 8|j})}
                             </a>
                           </h2>
                         </span>
@@ -157,7 +155,64 @@ let make = () => {
                         />
                         <span
                           className="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
-                          {React.string({j|debbielewis/workcation|j})}
+                          {React.string({j|Iftar / Timirev 34|j})}
+                        </span>
+                      </a>
+                    </div>
+                    <div
+                      className="hidden sm:flex flex-col flex-shrink-0 items-end space-y-3">
+                      <p className="flex items-center space-x-4">
+                        <button
+                          className="relative bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          type_="button">
+                          // <!-- Heroicon name: star -->
+
+                            <Icons.HeroIcons.Star
+                              className="h-5 w-5 text-yellow-300 hover:text-yellow-400"
+                            />
+                          </button>
+                      </p>
+                      <p className="flex text-gray-500 text-sm space-x-2">
+                        <span> {React.string({j|Taken 3h ago|j})} </span>
+                        <span> {React.string({j|·|j})} </span>
+                        <span> {React.string({j|by Saddam|j})} </span>
+                      </p>
+                    </div>
+                  </div>
+              </li>
+              <li
+                className="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-6">
+                <div className="flex items-center justify-between space-x-4">
+                  // <!-- Repo name and link -->
+
+                    <div className="min-w-0 space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <span
+                          className="h-4 w-4 bg-gray-100 rounded-full flex items-center justify-center"
+                          ariaHidden=true>
+                          <span className="h-2 w-2 bg-gray-400 rounded-full" />
+                        </span>
+                        <span className="block">
+                          <h2 className="text-sm font-medium">
+                            <a href="#">
+                              <span
+                                className="absolute inset-0"
+                                ariaHidden=true
+                              />
+                              {React.string({j|Burgers x 3|j})}
+                            </a>
+                          </h2>
+                        </span>
+                      </div>
+                      <a
+                        href="#"
+                        className="relative group flex items-center space-x-2.5">
+                        <Icons.HeroIcons.OfficeBuilding
+                          className="flex-shrink-0 w-5 h-5 text-gray-400 group-hover:text-gray-500"
+                        />
+                        <span
+                          className="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
+                          {React.string({j|Bahandi / Abay 42|j})}
                         </span>
                       </a>
                     </div>
@@ -176,10 +231,10 @@ let make = () => {
                       </p>
                       <p className="flex text-gray-500 text-sm space-x-2">
                         <span>
-                          {React.string({j|Last deploy 3h ago|j})}
+                          {React.string({j|Expires after 3 hours|j})}
                         </span>
                         <span> {React.string({j|·|j})} </span>
-                        <span> {React.string({j|United states|j})} </span>
+                        <span> {React.string({j|no order yet|j})} </span>
                       </p>
                     </div>
                   </div>
@@ -201,24 +256,69 @@ let make = () => {
             <ul className="divide-y divide-gray-200">
               <li className="py-4">
                 <div className="flex space-x-3">
-                  <img
-                    className="h-6 w-6 rounded-full"
-                    src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
-                    alt=""
-                  />
+                  <span
+                    className="inline-flex items-center justify-center h-5 w-5 p-1 rounded-full bg-gray-500">
+                    <Icons.HeroIcons.UserSolid
+                      className="text-white h-4 w-4"
+                    />
+                  </span>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
                       <h3 className="text-sm font-medium">
-                        {React.string({j|You|j})}
+                        {React.string({j|Saddam|j})}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {React.string({j|30m|j})}
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      {React.string({j|Took the the order, Baursaks x 8|j})}
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <li className="py-4">
+                <div className="flex space-x-3">
+                  <span
+                    className="inline-flex items-center justify-center h-5 w-5 p-1 rounded-full bg-gray-500">
+                    <Icons.HeroIcons.UserSolid
+                      className="text-white h-4 w-4"
+                    />
+                  </span>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-medium">
+                        {React.string({j|Dake|j})}
                       </h3>
                       <p className="text-sm text-gray-500">
                         {React.string({j|1h|j})}
                       </p>
                     </div>
                     <p className="text-sm text-gray-500">
-                      {React.string(
-                         {j|Deployed Workcation (2d89f0c8 in master) to production|j},
-                       )}
+                      {React.string({j|Posted new order, Baursak x 8|j})}
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <li className="py-4">
+                <div className="flex space-x-3">
+                  <span
+                    className="inline-flex items-center justify-center h-5 w-5 p-1 rounded-full bg-gray-500">
+                    <Icons.HeroIcons.UserSolid
+                      className="text-white h-4 w-4"
+                    />
+                  </span>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-medium">
+                        {React.string({j|Dake|j})}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {React.string({j|4h|j})}
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      {React.string({j|Posted new order, Burgers x 2|j})}
                     </p>
                   </div>
                 </div>

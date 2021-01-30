@@ -40,10 +40,12 @@ let columns =
     },
     {
       title: "Phone",
-      content: (_item: Manager.t) =>
+      content: (item: Manager.t) =>
         <p
           className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
-          {React.string({j|+7 777 076 5776|j})}
+          {React.string(
+             item.id == 1 ? {j|+7 777 076 5776|j} : {j|+7 707 476 5306|j},
+           )}
         </p>,
       textAlign: `left,
     },
@@ -63,14 +65,14 @@ let columns =
     {
       title: "Status",
       content: (item: Manager.t) => {
-        switch (item.status) {
-        | "created" =>
+        switch (item.id == 2) {
+        | true =>
           <button
             type_="button"
             className="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-5 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:shadow-outline-teal focus:border-teal-700 active:bg-teal-700 transition duration-150 ease-in-out">
             {React.string({j|Confirm|j})}
           </button>
-        | "confirmed" =>
+        | _ =>
           <dd className="flex items-center text-sm text-gray-700">
             <Icons.HeroIcons.CheckCircle
               className="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400"
@@ -90,8 +92,69 @@ let columns =
 
 [@react.component]
 let make = () => {
+  let managers: list(Manager.t) = [
+    {
+      id: 1,
+      branch: {
+        id: 1,
+        address: {
+          id: 1,
+          city_name: "Almaty",
+          country_name: "Kazakhstan",
+          house_number: "23d",
+          street: "Seifullin",
+          zip_code: "021000",
+        },
+        restaurant: {
+          id: 1,
+          avatar: "",
+          contacts: "",
+          cuisine: "",
+          description: "",
+          name: "",
+          status: "",
+        },
+      },
+      name: "Nursultan",
+      status: "",
+    },
+    {
+      id: 2,
+      branch: {
+        id: 1,
+        address: {
+          id: 1,
+          city_name: "Almaty",
+          country_name: "Kazakhstan",
+          house_number: "23d",
+          street: "Seifullin",
+          zip_code: "021000",
+        },
+        restaurant: {
+          id: 1,
+          avatar: "",
+          contacts: "",
+          cuisine: "",
+          description: "",
+          name: "",
+          status: "",
+        },
+      },
+      name: "Dake",
+      status: "",
+    },
+  ];
+  let grid: Request.state(Atd.Grid_wrap.t(Manager.t)) =
+    `Data({
+      data: managers,
+      meta: {
+        current_page: 1,
+        total_pages: 1,
+        total_count: 1,
+      },
+    });
   <ItemsListLayout
     title={j|Managers|j} createRoute={Route.Account(Managers(Create))}>
-    <ItemsTable columns grid={ManagerService.grid()} />
+    <ItemsTable columns grid=(grid, 1, _ => ()) />
   </ItemsListLayout>;
 };

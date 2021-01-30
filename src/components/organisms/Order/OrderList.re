@@ -4,7 +4,7 @@ type t = {
   id: int,
   branch_id: int,
   food_id: int,
-  user_id: int,
+  user_id: option(int),
   experation_time: DateTime.t,
   overdue_date: DateTime.t,
   discount_price: Decimal.t,
@@ -38,7 +38,9 @@ module OrderRowItem = {
       <td
         className="max-w-0 w-full px-6 py-4 whitespace-no-wrap text-sm text-left leading-5 group">
         <p className="text-cool-gray-700 group-hover:text-cool-gray-900">
-          {React.string(item.user_id |> string_of_int)}
+          {React.string(
+             item.user_id |> Belt.Option.mapWithDefault(_, "-", string_of_int),
+           )}
         </p>
       </td>
       <td
@@ -61,10 +63,10 @@ module OrderRowItem = {
           ])}>
           {React.string(
              switch (item.status) {
-             | "processed" => {j|Обработан|j}
-             | "pending" => {j|В обработке|j}
+             | "processed" => {j|taken|j}
+             | "pending" => {j|Processing|j}
              | "created"
-             | _ => {j|Создан|j}
+             | _ => {j|Created|j}
              },
            )}
         </span>
@@ -111,48 +113,34 @@ let make = () => {
       id: 1,
       branch_id: 1,
       food_id: 1,
-      user_id: 12354,
-      experation_time: DateTime.local(),
-      overdue_date: DateTime.local(),
+      user_id: Some(1),
+      experation_time: DateTime.fromDateFormat("15.12.2020"),
+      overdue_date: DateTime.fromDateFormat("06.12.2020"),
       discount_price: Decimal.make(1400.),
-      status: "processing",
+      status: "processed",
       taken_at: Some(DateTime.local()),
     },
     {
       id: 2,
       branch_id: 1,
       food_id: 1,
-      user_id: 12354,
-      experation_time: DateTime.local(),
-      overdue_date: DateTime.local(),
-      discount_price: Decimal.make(2800.),
+      user_id: None,
+      experation_time: DateTime.fromDateFormat("24.12.2020"),
+      overdue_date: DateTime.fromDateFormat("07.12.2020"),
+      discount_price: Decimal.make(500.),
       status: "pending",
       taken_at: None,
     },
-    {
-      id: 3,
-      branch_id: 1,
-      food_id: 1,
-      user_id: 12354,
-      experation_time: DateTime.local(),
-      overdue_date: DateTime.local(),
-      discount_price: Decimal.make(1400.),
-      status: "created",
-      taken_at: None,
-    },
-    {
-      id: 4,
-      branch_id: 1,
-      food_id: 1,
-      user_id: 12354,
-      experation_time: DateTime.local(),
-      overdue_date: DateTime.local(),
-      discount_price: Decimal.make(1400.),
-      status: "processing",
-      taken_at: Some(DateTime.local()),
-    },
   ];
-  <div className="mx-auto bg-white pb-4">
+
+  let (isLoading, setIsLoading) = React.useState(() => true);
+
+  React.useEffect0(() => {
+    let _ = Js.Global.setTimeout(() => {setIsLoading(_ => false)}, 1000);
+    None;
+  });
+
+  <div className="bg-white pb-4">
     <div className="flex flex-col">
       <div className="align-middle min-w-full overflow-x-auto overflow-hidden">
         <div className="flex px-6 py-4">
@@ -194,7 +182,7 @@ let make = () => {
               </th>
               <th
                 className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-cool-gray-500 uppercase tracking-wider whitespace-no-wrap">
-                {React.string({j|Dealine|j})}
+                {React.string({j|Deadline|j})}
               </th>
               <th
                 className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-cool-gray-500 uppercase tracking-wider whitespace-no-wrap">
@@ -207,12 +195,14 @@ let make = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-cool-gray-200">
-            {items
-             |> List.mapWithIndex(_, (index, item) => {
-                  <OrderRowItem item key={j|OrderRowItem-$index|j} />
-                })
-             |> List.toArray
-             |> React.array}
+            {isLoading
+               ? <LoadingSpinner />
+               : items
+                 |> List.mapWithIndex(_, (index, item) => {
+                      <OrderRowItem item key={j|OrderRowItem-$index|j} />
+                    })
+                 |> List.toArray
+                 |> React.array}
           </tbody>
         </table>
       </div>

@@ -64,7 +64,7 @@ module Sidebar = {
         icon: (~className=?, ()) => {
           <Icons.HeroIcons.OfficeBuilding ?className />;
         },
-        soon: true,
+        soon: false,
         haveAccess: ctx == Route.AdminCtx || ctx == Route.RestaurantCtx,
       },
       {
@@ -73,7 +73,7 @@ module Sidebar = {
         icon: (~className=?, ()) => {
           <Icons.HeroIcons.User ?className />;
         },
-        soon: true,
+        soon: false,
         haveAccess: ctx != Route.ManagerCtx && ctx != Route.ClientCtx,
       },
       {

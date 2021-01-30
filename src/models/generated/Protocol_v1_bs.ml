@@ -1,39 +1,6 @@
 (* Auto-generated from "Protocol_v1.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type address = Protocol_v1_t.address = {
-  id: int;
-  city_name: string;
-  country_name: string;
-  house_number: string;
-  street: string;
-  zip_code: string
-}
-
-type restaurant = Protocol_v1_t.restaurant = {
-  id: int;
-  avatar: string;
-  contacts: string;
-  cuisine: string;
-  description: string;
-  name: string;
-  status: string
-}
-
-type branch = Protocol_v1_t.branch = {
-  id: int;
-  address: address;
-  restaurant: restaurant;
-  manager: manager option
-}
-
-and manager = Protocol_v1_t.manager = {
-  id: int;
-  branch: branch;
-  name: string;
-  status: string
-}
-
 type user_profile = Protocol_v1_t.user_profile = {
   id: int;
   authentication_token: string;
@@ -58,6 +25,16 @@ type restaurant_registration_form =
 type restaurant_registration_form_wrapper =
   Protocol_v1_t.restaurant_registration_form_wrapper = {
   user: restaurant_registration_form
+}
+
+type restaurant = Protocol_v1_t.restaurant = {
+  id: int;
+  avatar: string;
+  contacts: string;
+  cuisine: string;
+  description: string;
+  name: string;
+  status: string
 }
 
 type registration_response = Protocol_v1_t.registration_response = {
@@ -85,6 +62,28 @@ type manager_registration_form = Protocol_v1_t.manager_registration_form = {
 type manager_registration_form_wrapper =
   Protocol_v1_t.manager_registration_form_wrapper = {
   user: manager_registration_form
+}
+
+type address = Protocol_v1_t.address = {
+  id: int;
+  city_name: string;
+  country_name: string;
+  house_number: string;
+  street: string;
+  zip_code: string
+}
+
+type branch = Protocol_v1_t.branch = {
+  id: int;
+  address: address;
+  restaurant: restaurant
+}
+
+type manager = Protocol_v1_t.manager = {
+  id: int;
+  branch: branch;
+  name: string;
+  status: string
 }
 
 type login_credentials = Protocol_v1_t.login_credentials = {
@@ -122,353 +121,6 @@ type app_state = Protocol_v1_t.app_state = {
   deviceType: string
 }
 
-let write_address = (
-  Atdgen_codec_runtime.Encode.make (fun (t : address) ->
-    (
-    Atdgen_codec_runtime.Encode.obj
-      [
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.int
-            )
-          ~name:"id"
-          t.id
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"city_name"
-          t.city_name
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"country_name"
-          t.country_name
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"house_number"
-          t.house_number
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"street"
-          t.street
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"zip_code"
-          t.zip_code
-      ]
-    )
-  )
-)
-let read_address = (
-  Atdgen_codec_runtime.Decode.make (fun json ->
-    (
-      ({
-          id =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.int
-              |> Atdgen_codec_runtime.Decode.field "id"
-            ) json;
-          city_name =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "city_name"
-            ) json;
-          country_name =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "country_name"
-            ) json;
-          house_number =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "house_number"
-            ) json;
-          street =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "street"
-            ) json;
-          zip_code =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "zip_code"
-            ) json;
-      } : address)
-    )
-  )
-)
-let write_restaurant = (
-  Atdgen_codec_runtime.Encode.make (fun (t : restaurant) ->
-    (
-    Atdgen_codec_runtime.Encode.obj
-      [
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.int
-            )
-          ~name:"id"
-          t.id
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"avatar"
-          t.avatar
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"contacts"
-          t.contacts
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"cuisine"
-          t.cuisine
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"description"
-          t.description
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"name"
-          t.name
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"status"
-          t.status
-      ]
-    )
-  )
-)
-let read_restaurant = (
-  Atdgen_codec_runtime.Decode.make (fun json ->
-    (
-      ({
-          id =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.int
-              |> Atdgen_codec_runtime.Decode.field "id"
-            ) json;
-          avatar =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "avatar"
-            ) json;
-          contacts =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "contacts"
-            ) json;
-          cuisine =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "cuisine"
-            ) json;
-          description =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "description"
-            ) json;
-          name =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "name"
-            ) json;
-          status =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "status"
-            ) json;
-      } : restaurant)
-    )
-  )
-)
-let rec write__6 js = (
-  Atdgen_codec_runtime.Encode.nullable (
-    write_manager
-  )
-) js
-and write_branch js = (
-  Atdgen_codec_runtime.Encode.make (fun (t : branch) ->
-    (
-    Atdgen_codec_runtime.Encode.obj
-      [
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.int
-            )
-          ~name:"id"
-          t.id
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            write_address
-            )
-          ~name:"address"
-          t.address
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            write_restaurant
-            )
-          ~name:"restaurant"
-          t.restaurant
-        ;
-          Atdgen_codec_runtime.Encode.field_o
-            (
-            write_manager
-            )
-          ~name:"manager"
-          t.manager
-      ]
-    )
-  )
-) js
-and write_manager js = (
-  Atdgen_codec_runtime.Encode.make (fun (t : manager) ->
-    (
-    Atdgen_codec_runtime.Encode.obj
-      [
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.int
-            )
-          ~name:"id"
-          t.id
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            write_branch
-            )
-          ~name:"branch"
-          t.branch
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"name"
-          t.name
-        ;
-          Atdgen_codec_runtime.Encode.field
-            (
-            Atdgen_codec_runtime.Encode.string
-            )
-          ~name:"status"
-          t.status
-      ]
-    )
-  )
-) js
-let rec read__6 js = (
-  Atdgen_codec_runtime.Decode.nullable (
-    read_manager
-  )
-) js
-and read_branch js = (
-  Atdgen_codec_runtime.Decode.make (fun json ->
-    (
-      ({
-          id =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.int
-              |> Atdgen_codec_runtime.Decode.field "id"
-            ) json;
-          address =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              read_address
-              |> Atdgen_codec_runtime.Decode.field "address"
-            ) json;
-          restaurant =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              read_restaurant
-              |> Atdgen_codec_runtime.Decode.field "restaurant"
-            ) json;
-          manager =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              read_manager
-              |> Atdgen_codec_runtime.Decode.fieldOptional "manager"
-            ) json;
-      } : branch)
-    )
-  )
-) js
-and read_manager js = (
-  Atdgen_codec_runtime.Decode.make (fun json ->
-    (
-      ({
-          id =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.int
-              |> Atdgen_codec_runtime.Decode.field "id"
-            ) json;
-          branch =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              read_branch
-              |> Atdgen_codec_runtime.Decode.field "branch"
-            ) json;
-          name =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "name"
-            ) json;
-          status =
-            Atdgen_codec_runtime.Decode.decode
-            (
-              Atdgen_codec_runtime.Decode.string
-              |> Atdgen_codec_runtime.Decode.field "status"
-            ) json;
-      } : manager)
-    )
-  )
-) js
 let write_user_profile = (
   Atdgen_codec_runtime.Encode.make (fun (t : user_profile) ->
     (
@@ -709,6 +361,113 @@ let read_restaurant_registration_form_wrapper = (
               |> Atdgen_codec_runtime.Decode.field "user"
             ) json;
       } : restaurant_registration_form_wrapper)
+    )
+  )
+)
+let write_restaurant = (
+  Atdgen_codec_runtime.Encode.make (fun (t : restaurant) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"avatar"
+          t.avatar
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"contacts"
+          t.contacts
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"cuisine"
+          t.cuisine
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"description"
+          t.description
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"status"
+          t.status
+      ]
+    )
+  )
+)
+let read_restaurant = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          avatar =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "avatar"
+            ) json;
+          contacts =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "contacts"
+            ) json;
+          cuisine =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "cuisine"
+            ) json;
+          description =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "description"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          status =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "status"
+            ) json;
+      } : restaurant)
     )
   )
 )
@@ -971,6 +730,223 @@ let read_manager_registration_form_wrapper = (
               |> Atdgen_codec_runtime.Decode.field "user"
             ) json;
       } : manager_registration_form_wrapper)
+    )
+  )
+)
+let write_address = (
+  Atdgen_codec_runtime.Encode.make (fun (t : address) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"city_name"
+          t.city_name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"country_name"
+          t.country_name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"house_number"
+          t.house_number
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"street"
+          t.street
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"zip_code"
+          t.zip_code
+      ]
+    )
+  )
+)
+let read_address = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          city_name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "city_name"
+            ) json;
+          country_name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "country_name"
+            ) json;
+          house_number =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "house_number"
+            ) json;
+          street =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "street"
+            ) json;
+          zip_code =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "zip_code"
+            ) json;
+      } : address)
+    )
+  )
+)
+let write_branch = (
+  Atdgen_codec_runtime.Encode.make (fun (t : branch) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_address
+            )
+          ~name:"address"
+          t.address
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_restaurant
+            )
+          ~name:"restaurant"
+          t.restaurant
+      ]
+    )
+  )
+)
+let read_branch = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          address =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_address
+              |> Atdgen_codec_runtime.Decode.field "address"
+            ) json;
+          restaurant =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_restaurant
+              |> Atdgen_codec_runtime.Decode.field "restaurant"
+            ) json;
+      } : branch)
+    )
+  )
+)
+let write_manager = (
+  Atdgen_codec_runtime.Encode.make (fun (t : manager) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_branch
+            )
+          ~name:"branch"
+          t.branch
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"status"
+          t.status
+      ]
+    )
+  )
+)
+let read_manager = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          branch =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_branch
+              |> Atdgen_codec_runtime.Decode.field "branch"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          status =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "status"
+            ) json;
+      } : manager)
     )
   )
 )
