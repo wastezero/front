@@ -113,7 +113,7 @@ module BranchService = {
 module ManagerService = {
   type t = Protocol_v1_t.branch;
 
-  let%private endpoint = "admin_panel/orders";
+  let%private endpoint = "admin_panel/managers";
 
   let grid = (~params=?, ()) => {
     let url = Endpoints.resource(~base=endpoint, ());
@@ -124,6 +124,15 @@ module ManagerService = {
   let view = id => {
     let url = Endpoints.resource(~base=endpoint, ~id, ());
     Request.useFetch(~url, ~decode=Manager.decode, ());
+  };
+
+  let confirm = id => {
+    let url =
+      Endpoints.resource(
+        ~base=endpoint ++ "/" ++ string_of_int(id) ++ "/approve",
+        (),
+      );
+    Request.post(~decode=_ => (), url, Js.Json.null);
   };
 };
 
@@ -140,5 +149,21 @@ module OrderService = {
     let url = Endpoints.resource(~base=endpoint, ());
     let payload = Order.encode(form);
     Request.post(~decode=Order.decode, url, payload);
+  };
+};
+
+module FoodService = {
+  let%private endpoint = "admin_panel/foods";
+
+  let grid = (~params=?, ()) => {
+    let url = Endpoints.resource(~base=endpoint, ());
+
+    Request.useGrid(~url, ~decode=Food.grid, ~params?, ());
+  };
+
+  let post = form => {
+    let url = Endpoints.resource(~base=endpoint, ());
+    let payload = Food.encode(form);
+    Request.post(~decode=Food.decode, url, payload);
   };
 };

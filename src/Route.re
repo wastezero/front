@@ -27,7 +27,8 @@ type account =
   | Branches(listState)
   | Managers(listState)
   | Foods(listState)
-  | Orders(listState);
+  | Orders(listState)
+  | HelpChat;
 
 type t =
   /* Pages */
@@ -69,6 +70,7 @@ let toString = route => {
     | Managers(listState) => getListStateUrl("/account/managers", listState)
     | Foods(listState) => getListStateUrl("/account/foods", listState)
     | Orders(listState) => getListStateUrl("/account/orders", listState)
+    | HelpChat => "/account/chat"
     }
   | NotFound => "/404"
   };
@@ -107,6 +109,7 @@ let ofUrl = (url: ReasonReact.Router.url) => {
       | ["branches", ...rest] => Branches(getListState(rest))
       | ["foods", ...rest] => Foods(getListState(rest))
       | ["orders", ...rest] => Orders(getListState(rest))
+      | ["chat"] => HelpChat
       | _ => Home
       };
     Account(account);

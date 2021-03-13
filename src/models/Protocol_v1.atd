@@ -146,3 +146,22 @@ type order_form_body = {
 type order_create_form = {
   order: order_form_body;
 }
+
+type food_base_fields = {
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string;
+}
+
+type food_form = {
+  food: food_base_fields;
+}
+
+type food = {
+  id: int;
+  inherit food_base_fields;
+}

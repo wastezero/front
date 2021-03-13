@@ -99,6 +99,29 @@ type login_credentials = { email: string; password: string }
 
 type login_credentials_wrapper = { user: login_credentials }
 
+type food_base_fields = {
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
+type food_form = { food: food_base_fields }
+
+type food = {
+  id: int;
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
 type error = { status: int; message: string; errors: string list }
 
 type decimal = Decimal.t

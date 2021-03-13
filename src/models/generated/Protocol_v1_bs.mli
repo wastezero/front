@@ -120,6 +120,29 @@ type login_credentials_wrapper = Protocol_v1_t.login_credentials_wrapper = {
   user: login_credentials
 }
 
+type food_base_fields = Protocol_v1_t.food_base_fields = {
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
+type food_form = Protocol_v1_t.food_form = { food: food_base_fields }
+
+type food = Protocol_v1_t.food = {
+  id: int;
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
 type error = Protocol_v1_t.error = {
   status: int;
   message: string;
@@ -219,6 +242,18 @@ val write_login_credentials :  login_credentials Atdgen_codec_runtime.Encode.t
 val read_login_credentials_wrapper :  login_credentials_wrapper Atdgen_codec_runtime.Decode.t
 
 val write_login_credentials_wrapper :  login_credentials_wrapper Atdgen_codec_runtime.Encode.t
+
+val read_food_base_fields :  food_base_fields Atdgen_codec_runtime.Decode.t
+
+val write_food_base_fields :  food_base_fields Atdgen_codec_runtime.Encode.t
+
+val read_food_form :  food_form Atdgen_codec_runtime.Decode.t
+
+val write_food_form :  food_form Atdgen_codec_runtime.Encode.t
+
+val read_food :  food Atdgen_codec_runtime.Decode.t
+
+val write_food :  food Atdgen_codec_runtime.Encode.t
 
 val read_error :  error Atdgen_codec_runtime.Decode.t
 

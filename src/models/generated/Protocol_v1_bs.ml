@@ -120,6 +120,29 @@ type login_credentials_wrapper = Protocol_v1_t.login_credentials_wrapper = {
   user: login_credentials
 }
 
+type food_base_fields = Protocol_v1_t.food_base_fields = {
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
+type food_form = Protocol_v1_t.food_form = { food: food_base_fields }
+
+type food = Protocol_v1_t.food = {
+  id: int;
+  restaurant_id: int;
+  name: string;
+  description: string;
+  price: int;
+  cuisine: string;
+  ingredients: string;
+  image: string
+}
+
 type error = Protocol_v1_t.error = {
   status: int;
   message: string;
@@ -1299,6 +1322,262 @@ let read_login_credentials_wrapper = (
               |> Atdgen_codec_runtime.Decode.field "user"
             ) json;
       } : login_credentials_wrapper)
+    )
+  )
+)
+let write_food_base_fields = (
+  Atdgen_codec_runtime.Encode.make (fun (t : food_base_fields) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"restaurant_id"
+          t.restaurant_id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"description"
+          t.description
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"price"
+          t.price
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"cuisine"
+          t.cuisine
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"ingredients"
+          t.ingredients
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"image"
+          t.image
+      ]
+    )
+  )
+)
+let read_food_base_fields = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          restaurant_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "restaurant_id"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          description =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "description"
+            ) json;
+          price =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "price"
+            ) json;
+          cuisine =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "cuisine"
+            ) json;
+          ingredients =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "ingredients"
+            ) json;
+          image =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "image"
+            ) json;
+      } : food_base_fields)
+    )
+  )
+)
+let write_food_form = (
+  Atdgen_codec_runtime.Encode.make (fun (t : food_form) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            write_food_base_fields
+            )
+          ~name:"food"
+          t.food
+      ]
+    )
+  )
+)
+let read_food_form = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          food =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              read_food_base_fields
+              |> Atdgen_codec_runtime.Decode.field "food"
+            ) json;
+      } : food_form)
+    )
+  )
+)
+let write_food = (
+  Atdgen_codec_runtime.Encode.make (fun (t : food) ->
+    (
+    Atdgen_codec_runtime.Encode.obj
+      [
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"id"
+          t.id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"restaurant_id"
+          t.restaurant_id
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"name"
+          t.name
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"description"
+          t.description
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.int
+            )
+          ~name:"price"
+          t.price
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"cuisine"
+          t.cuisine
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"ingredients"
+          t.ingredients
+        ;
+          Atdgen_codec_runtime.Encode.field
+            (
+            Atdgen_codec_runtime.Encode.string
+            )
+          ~name:"image"
+          t.image
+      ]
+    )
+  )
+)
+let read_food = (
+  Atdgen_codec_runtime.Decode.make (fun json ->
+    (
+      ({
+          id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "id"
+            ) json;
+          restaurant_id =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "restaurant_id"
+            ) json;
+          name =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "name"
+            ) json;
+          description =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "description"
+            ) json;
+          price =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.int
+              |> Atdgen_codec_runtime.Decode.field "price"
+            ) json;
+          cuisine =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "cuisine"
+            ) json;
+          ingredients =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "ingredients"
+            ) json;
+          image =
+            Atdgen_codec_runtime.Decode.decode
+            (
+              Atdgen_codec_runtime.Decode.string
+              |> Atdgen_codec_runtime.Decode.field "image"
+            ) json;
+      } : food)
     )
   )
 )

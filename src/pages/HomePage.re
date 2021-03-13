@@ -37,6 +37,7 @@ let make = (~page: Route.account) => {
          }
        | Foods(listState) =>
          switch (listState) {
+         | Create => <FoodCreate />
          | List
          | _ => <FoodList />
          }
@@ -46,6 +47,7 @@ let make = (~page: Route.account) => {
          | List
          | _ => <OrderList />
          }
+       | HelpChat => <ChatPage />
        }}
     </div>
   </div>;

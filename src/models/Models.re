@@ -53,3 +53,17 @@ module Order = {
   let grid: Atdgen_codec_runtime.Json.t => grid =
     Atd.Grid_wrap.decode("orders", decode);
 };
+module Food = {
+  type t = Protocol_v1_t.food;
+  type grid = Atd.Grid_wrap.t(t);
+  type form_body = Protocol_v1_t.food_form;
+
+  let decode: Atdgen_codec_runtime.Json.t => t =
+    Atd.decode(Protocol_v1_bs.read_food);
+
+  let encode: form_body => Js.Json.t =
+    Atd.encode(Protocol_v1_bs.write_food_form);
+
+  let grid: Atdgen_codec_runtime.Json.t => grid =
+    Atd.Grid_wrap.decode("foods", decode);
+};

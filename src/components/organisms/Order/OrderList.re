@@ -72,7 +72,7 @@ let columns =
 [@react.component]
 let make = () => {
   <ItemsListLayout
-    title={j|Orders|j} createRoute={Route.Account(Branches(Create))}>
+    title={j|Orders|j} createRoute={Route.Account(Orders(Create))}>
     <ItemsTable columns grid={Wis.OrderService.grid()} />
   </ItemsListLayout>;
 };

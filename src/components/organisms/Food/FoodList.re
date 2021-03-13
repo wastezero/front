@@ -6,9 +6,9 @@ let columns =
   ItemsTable.[
     {
       title: "ID",
-      content: (item: Manager.t) =>
+      content: (item: Food.t) =>
         <Link
-          route={Account(Managers(ItemView(item.id)))}
+          route={Account(Foods(ItemView(item.id)))}
           className="inline-flex space-x-2 items-center justify-between group">
           <p
             className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
@@ -22,7 +22,7 @@ let columns =
     },
     {
       title: "Name",
-      content: (item: Manager.t) =>
+      content: (item: Food.t) =>
         <p
           className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
           {React.string(item.name)}
@@ -30,27 +30,32 @@ let columns =
       textAlign: `left,
     },
     {
-      title: "Branch",
-      content: (item: Manager.t) =>
-        <Link
-          route={Account(Branches(ItemView(item.id)))}
-          className="inline-flex space-x-2 items-center justify-between group">
-          <p
-            className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
-            {React.string(item.id |> string_of_int)}
-          </p>
-        </Link>,
+      title: "Description",
+      content: (item: Food.t) =>
+        <p
+          className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
+          {React.string(item.description)}
+        </p>,
       textAlign: `left,
     },
     {
-      title: "Status",
-      content: (item: Manager.t) =>
+      title: "cuisine",
+      content: (item: Food.t) =>
+        <p
+          className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
+          {React.string(item.cuisine)}
+        </p>,
+      textAlign: `left,
+    },
+    {
+      title: "Restaurant id",
+      content: (item: Food.t) =>
         <Link
-          route={Account(Branches(ItemView(item.id)))}
+          route={Account(Restaurants(ItemView(item.id)))}
           className="inline-flex space-x-2 items-center justify-between group">
           <p
             className="text-sm leading-5 text-gray-700 group-hover:text-cool-gray-900">
-            {React.string(item.status)}
+            {React.string(item.restaurant_id |> string_of_int)}
           </p>
         </Link>,
       textAlign: `left,
@@ -60,7 +65,7 @@ let columns =
 [@react.component]
 let make = () => {
   <ItemsListLayout
-    title={j|Managers|j} createRoute={Route.Account(Managers(Create))}>
-    <ItemsTable columns grid={ManagerService.grid()} />
+    title={j|Foods|j} createRoute={Route.Account(Foods(Create))}>
+    <ItemsTable columns grid={FoodService.grid()} />
   </ItemsListLayout>;
 };
